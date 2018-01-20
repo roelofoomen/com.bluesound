@@ -1,0 +1,161 @@
+<script type="text/javascript">
+
+Homey.setTitle( __('pair.title') );
+
+$(function() {
+    $('#test-connection').click(function() {
+        $('.bluesound-test').hide();
+        $('.bluesound-ok').hide();
+        $('.bluesound-error').hide();
+        $('.bluesound-info').hide();
+
+		var inputaddress = $('#address').val();
+        var inputport = Number($('#port').val());
+        var inputpolling = Number($('#polling').val());
+
+        if( inputaddress != '' && inputpolling != '') {
+            var device_data = {
+                address  : inputaddress,
+                port     : inputport
+            };
+
+            Homey.emit('testConnection', device_data, function(error, result) {
+                if(error == 401) {
+                    $('.bluesound-error').show();
+                    $('.bluesound-error-msg').html( __('pair.unauthorized') );
+                } else if(error == 408 || error == 504) {
+                    $('.bluesound-error').show();
+                    $('.bluesound-error-msg').html( __('pair.timeout') );
+                } else if(error == 500) {
+                    $('.bluesound-error').show();
+                    $('.bluesound-error-msg').html( __('pair.servererror') );
+                } else if(!error && !result) {
+                    $('.bluesound-error').show();
+                    $('.bluesound-error-msg').html( __('pair.unknownerror') );
+                } else if (result) {
+                    $('#mac').val(result.mac);
+                    var bluesoundinfo = "<div class='info-row'><span class='info-label' data-i18n='pair.brand'>Brand:</span><span class='info-value'> "+ result.brand +"</span></div><div class='info-row'><span class='info-label' data-i18n='pair.model'>Model:</span><span class='info-value'> "+ result.model +"</span></div><div class='info-row'><span class='info-label' data-i18n='pair.mac'>MAC Address:</span><span class='info-value'> "+ result.mac +"</span></div>";
+                    $('.bluesound-test').show();
+                    $('.bluesound-info').html(bluesoundinfo);
+                    $('#connect').prop('disabled', false);
+                } else {
+                    $('.bluesound-error').show();
+                    $('.bluesound-error-msg').html( __('pair.unknownerror') );
+                }
+            });
+
+        } else {
+            $('.bluesound-error').show();
+            $('.bluesound-error-msg').html( __('pair.nosettings') );
+        }
+
+	});
+
+	$('#connect').click(function() {
+        var inputaddress = $('#address').val();
+        var inputport = Number($('#port').val());
+        var inputpolling = Number($('#polling').val());
+
+        if(inputaddress != '' && inputport != '' && inputpolling != '') {
+            var device_data = {
+                id : inputaddress,
+            };
+
+            var settings = {
+                address  : inputaddress,
+                port     : inputport,
+                polling  : inputpolling
+            };
+
+            Homey.addDevice({
+                name	: 'Bluesound',
+                data 	: device_data,
+                settings: settings
+            }, function(error, result) {
+                if (error) {
+                    $('.bluesound-error').show();
+                    $('.bluesound-error-msg').html(error.message || error.toString() );
+                }
+                $('.bluesound-test').hide();
+                $('.bluesound-error').hide();
+                $('.bluesound-ok').show();
+
+                Homey.done();
+            })
+
+        } else {
+            $('.bluesound-error').show();
+            $('.bluesound-error-msg').html( __('pair.nosettings') );
+        }
+
+	});
+})
+</script>
+
+<style type="text/css">
+    .bluesound-pairing {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .bluesound-pairing .col1, .bluesound-pairing .col2 {
+        width: 48%;
+    }
+    .bluesound-status, .bluesound-info {
+		display: none;
+	}
+    .bluesound-info {
+        margin-top: 10px;
+        font-size: 12px;
+    }
+    .bluesound-info .info-label {
+        min-width: 150px;
+        font-weight: 700;
+    }
+	.bluesound-status {
+		display: none;
+	}
+    .buttons, .messages {
+        padding-top: 14px;
+    }
+    .bluesound-image {
+        margin: 0 auto;
+    }
+    .bluesound-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+</style>
+
+<p data-i18n="pair.intro">Enter the IP address and port of your Bluesound device.</p>
+<div class="bluesound-pairing">
+    <div class="col1">
+        <div class="form-group">
+            <label for="address" data-i18n="pair.address">IP address</label>
+            <input type="text" class="form-control" id="address" placeholder="0.0.0.0" required>
+        </div>
+        <div class="form-group">
+        	<label for="port" data-i18n="pair.port">Port</label>
+        	<input type="number" class="form-control" id="port" placeholder="8080" value="8080" required>
+        </div>
+        <div class="form-group">
+        	<label for="polling" data-i18n="pair.polling">Polling Frequency</label>
+        	<input type="number" class="form-control" id="polling" min="5" max="3600" placeholder="5" value="5" required>
+        </div>
+        <input type="hidden" id="mac" value="">
+        <div class="form-group buttons">
+            <button id="test-connection" class="button" data-i18n="pair.test">Test Connection</button>
+            <button id="connect" class="button" data-i18n="pair.connect" disabled>Connect</button>
+        </div>
+    </div>
+    <div class="col2">
+        <div class="bluesound-image"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5fY51AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAWdEVYdENyZWF0aW9uIFRpbWUAMDEvMTkvMTjvAjOdAAAajUlEQVR4nO3de5gkdX3v8c+3uqt2d7pqpmqXVbIJDxfjFcUFEURNAC/hojEENBp9xKCgYADjwQOiPHKeiJeASI4i3lBuh6wIang8BA/CUcgKcgRhXUXlHBFZ4oKwWzVT1bM7Vd31PX/0DNnt6Znpmemeni98Xs+zf1BTXf1jZ+c91XX5lagqiIgscAY9ACKibjFYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGQGg0VEZjBYRGSG+KGrgx7EblS3KuQ+Eb1NVe6t58WPdFwbgx4WEQ3e8gvW7sYB3A/VH0Dkm2mc/2zQAyKiwVnuwWqj/wvAxWlcfH/QIyGipWcsWE/5l2bZPHt8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tKZt2ROzzzO1RVVPy5LipqUYHBENXqdgWbChLJvn1kebnDqG6Blk2T01Zw63KvSzWVzcPOiBENHSW+7BGgewSRX/rqLfqMf9mT2UiGxYfsFSfQzAZhXcDpWN443irjJbVg/hJKIBEUs3OhPRM5upC0eJ6JmNwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiMxgsIjKDwSIiM/4/yvRQjubhdswAAAAASUVORK5CYII=" alt="IP Webcam" border="0" /></div>
+        <div class="bluesound-info"></div>
+    </div>
+</div>
+<div class="messages">
+    <p class="bluesound-status bluesound-test" style="color: #008C23;"><i class="fa fa-check"></i> <span class="bluesound-test-msg" data-i18n="pair.testing">Bluesound connection test succesfull, you can now connect the Bluesound device.</span></p>
+    <p class="bluesound-status bluesound-ok" style="color: #008C23;"><i class="fa fa-check"></i> <span class="bluesound-ok-msg" data-i18n="pair.success">Bluesound device added succesfully.</span></p>
+    <p class="bluesound-status bluesound-error" style="color: #ff6300;"><i class="fa fa-times"></i> <span class="bluesound-error-msg"></span></p>
+</div>

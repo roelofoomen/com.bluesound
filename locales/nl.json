@@ -1,0 +1,21 @@
+{
+    "pair": {
+		"title": "Bluesound apparaat toevoegen",
+        "nosettings": "Vul a.u.b. alle verplichte velden in.",
+        "servererror": "Foutmelding 500: interne server fout",
+        "timeout": "Timeout foutmelding: zorg ervoor dat je het correcte IP adres hebt ingevoerd en dat de IP Webcam online is.",
+        "unknownerror": "Onbekende fout, weet je zeker dat je het juist IP adres hebt opgegeven en dat de IP Webcam op hetzelfde netwerk zit als Homey? Controleer a.u.b. je instellingen en probeer het nog eens.",
+        "intro": "Voer het IP adres en de port van het Bluesound apparaat in.",
+        "address": "IP adres",
+        "port": "Poort",
+        "polling": "Polling frequentie",
+        "success": "Bluesound apparaat succesvol toegevoegd.",
+        "test" : "Test connectie",
+        "testing" : "Bluesound connectietest succesvol, je kan het Bluesound apparaat nu verbinden.",
+        "connect": "Verbind",
+        "brand": "Merk:",
+        "model": "Model:",
+        "mac": "MAC address:"
+	},
+    "Unreachable": "Onbereikbaar"
+}
