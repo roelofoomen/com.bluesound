@@ -13,8 +13,7 @@
         "test" : "Test Connection",
         "testing" : "Bluesound connection test succesfull, you can now connect the Bluesound device.",
         "connect": "Connect",
-        "brand": "Brand:",
-        "model": "Model:",
+        "name": "Device:",
         "mac": "MAC address:"
 	},
     "Unreachable": "Unreachable"

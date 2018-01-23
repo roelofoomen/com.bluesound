@@ -13,8 +13,7 @@
         "test" : "Test connectie",
         "testing" : "Bluesound connectietest succesvol, je kan het Bluesound apparaat nu verbinden.",
         "connect": "Verbind",
-        "brand": "Merk:",
-        "model": "Model:",
+        "name": "Apparaat:",
         "mac": "MAC address:"
 	},
     "Unreachable": "Onbereikbaar"

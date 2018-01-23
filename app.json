@@ -51,7 +51,6 @@
 			},
 			"class": "speaker",
 			"capabilities": [
-				"on_off",
                 "speaker_playing",
 				"speaker_prev",
 				"speaker_next",
@@ -109,287 +108,375 @@
 			]
 		}
 	],
-	"flow": {
-		"actions": [
-			{
-				"id": "emailsnapshot",
+    "flow": {
+        "triggers": [
+            {
+				"id": "start_playing",
 				"title": {
-					"en": "Email live snapshot",
-					"nl": "Email live snapshot"
+                    "en": "Start Playing",
+                    "nl": "Start afspelen"
 				},
-				"hint": {
-					"en": "Take a snapshot and send it with email (make sure email is configured in the app settings).",
-					"nl": "Maak een  snapshot en verstuur deze per email (zorg ervoor dat email is geconfigureerd in de app instellingen)."
-				},
+                "tokens": [
+                    {
+                        "name": "album",
+                        "type": "string",
+                        "title": {
+                            "en": "Album",
+                            "nl": "Album"
+                        },
+                        "example": "Dirt"
+                    },
+                    {
+                        "name": "title",
+                        "type": "string",
+                        "title": {
+                            "en": "Track",
+                            "nl": "Track"
+                        },
+                        "example": "Would?"
+                    },
+                    {
+                        "name": "artist",
+                        "type": "string",
+                        "title": {
+                            "en": "Artist",
+                            "nl": "Artist"
+                        },
+                        "example": "Alice in Chains"
+                    }
+                ],
 				"args": [
-					{
-						"name": "mailto",
-						"type": "text",
-						"placeholder": {
-							"en": "Send mail to",
-							"nl": "Verstuur mail aan"
-						}
-					},
-					{
+                    {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
-							"en": "Select IP Webcam",
-							"nl": "Selecteer IP Webcam"
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
 						},
 						"filter": "driver_id=bluesound"
 					}
 				]
 			},
             {
-				"id": "sensor_threshold",
+				"id": "stop_playing",
 				"title": {
-					"en": "Motion or sound threshold",
-					"nl": "Beweging of geluid drempel"
-				},
-				"hint": {
-					"en": "Set the motion or sound threshold that triggers the alarm. Lower threshold will trigger the alarm faster.",
-					"nl": "Stel de beweging of geluid drempel in voor het triggeren van het alarm. Een lage drempel zal het alarm eerder triggeren"
+                    "en": "Stop Playing",
+                    "nl": "Stop afspelen"
 				},
 				"args": [
-					{
-						"name": "sensor_type",
-						"type": "dropdown",
-						"values": [
-							{
-								"id": "motion",
-								"label": {
-									"en": "Motion",
-									"nl": "Beweging"
-								}
-							},
-							{
-								"id": "sound",
-								"label": {
-									"en": "Sound",
-									"nl": "Geluid"
-								}
-							}
-						]
-					},
-					{
-						"name": "threshold",
-						"type": "number",
-						"min": 1,
-						"max": 1000,
-						"steps": 1,
-						"placeholder": {
-							"en": "Threshold (1 - 1000)",
-							"nl": "Drempel (1 - 1000)"
-						}
-					},
-					{
+                    {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
-							"en": "Select IP Webcam",
-							"nl": "Selecteer IP Webcam"
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
 						},
 						"filter": "driver_id=bluesound"
 					}
 				]
 			},
-			{
-				"id": "nightvision",
+            {
+				"id": "artist_changed",
 				"title": {
-					"en": "Swith night vision",
-					"nl": "Nachtvisie schakelen"
+                    "en": "Artist changed",
+                    "nl": "Artiest gewijzigd"
 				},
-				"hint": {
-					"en": "Switch the nightvision and set the gain",
-					"nl": "Schakekel de nachtvisie  en stel de sterkte in"
-				},
+                "tokens": [
+                    {
+                        "name": "album",
+                        "type": "string",
+                        "title": {
+                            "en": "Album",
+                            "nl": "Album"
+                        },
+                        "example": "Dirt"
+                    },
+                    {
+                        "name": "track",
+                        "type": "string",
+                        "title": {
+                            "en": "Track",
+                            "nl": "Track"
+                        },
+                        "example": "Would?"
+                    },
+                    {
+                        "name": "artist",
+                        "type": "string",
+                        "title": {
+                            "en": "Artist",
+                            "nl": "Artist"
+                        },
+                        "example": "Alice in Chains"
+                    }
+                ],
 				"args": [
-					{
-						"name": "nightvision",
-						"type": "dropdown",
-						"values": [
-							{
-								"id": "on",
-								"label": {
-									"en": "On",
-									"nl": "Aan"
-								}
-							},
-							{
-								"id": "off",
-								"label": {
-									"en": "Off",
-									"nl": "Uit"
-								}
-							}
-						]
-					},
-					{
-						"name": "nightvision_gain",
-						"type": "number",
-						"min": 0.25,
-						"max": 60,
-						"steps": 0.25,
-						"placeholder": {
-							"en": "Gain (0.25 - 60)",
-							"nl": "Sterkte (0.25 - 60)"
-						}
-					},
-					{
-						"name": "nightvision_exposure",
-						"type": "number",
-						"min": 1,
-						"max": 20,
-						"steps": 1,
-						"placeholder": {
-							"en": "Exposure (1 - 20)",
-							"nl": "Belichting (1 - 20)"
-						}
-					},
-					{
+                    {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
-							"en": "Select IP Webcam",
-							"nl": "Selecteer IP Webcam"
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
 						},
 						"filter": "driver_id=bluesound"
 					}
 				]
 			},
-			{
-				"id": "zoom",
+            {
+				"id": "track_changed",
 				"title": {
-					"en": "Zoom",
-					"nl": "Zoom"
+                    "en": "Track changed",
+                    "nl": "Track gewijzigd"
 				},
+                "tokens": [
+                    {
+                        "name": "album",
+                        "type": "string",
+                        "title": {
+                            "en": "Album",
+                            "nl": "Album"
+                        },
+                        "example": "Dirt"
+                    },
+                    {
+                        "name": "track",
+                        "type": "string",
+                        "title": {
+                            "en": "Track",
+                            "nl": "Track"
+                        },
+                        "example": "Would?"
+                    },
+                    {
+                        "name": "artist",
+                        "type": "string",
+                        "title": {
+                            "en": "Artist",
+                            "nl": "Artist"
+                        },
+                        "example": "Alice in Chains"
+                    }
+                ],
 				"args": [
-					{
-						"name": "zoom",
-						"type": "range",
-						"min": 1,
-						"max": 99,
-						"steps": 1,
-						"label": "x",
-						"labelMultiplier": 1,
-						"labelDecimals": 0
-					},
-					{
+                    {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
-							"en": "Select IP Webcam",
-							"nl": "Selecteer IP Webcam"
-						},
-						"filter": "driver_id=bluesound"
-					}
-				]
-			},
-			{
-				"id": "quality",
-				"title": {
-					"en": "Stream Quality",
-					"nl": "Stream kwaliteit"
-				},
-				"args": [
-					{
-						"name": "quality",
-						"type": "range",
-						"min": 1,
-						"max": 100,
-						"steps": 1,
-						"label": "%",
-						"labelMultiplier": 1,
-						"labelDecimals": 0
-					},
-					{
-						"name": "device",
-						"type": "device",
-						"placeholder": {
-							"en": "Select IP Webcam",
-							"nl": "Selecteer IP Webcam"
-						},
-						"filter": "driver_id=bluesound"
-					}
-				]
-			},
-			{
-				"id": "led",
-				"title": {
-					"en": "Switch the LED",
-					"nl": "LED schakelen"
-				},
-				"args": [
-					{
-						"name": "led",
-						"type": "dropdown",
-						"values": [
-							{
-								"id": "on",
-								"label": {
-									"en": "On",
-									"nl": "Aan"
-								}
-							},
-							{
-								"id": "off",
-								"label": {
-									"en": "Off",
-									"nl": "Uit"
-								}
-							}
-						]
-					},
-					{
-						"name": "device",
-						"type": "device",
-						"placeholder": {
-							"en": "Select IP Webcam",
-							"nl": "Selecteer IP Webcam"
-						},
-						"filter": "driver_id=bluesound"
-					}
-				]
-			},
-			{
-				"id": "whichcamera",
-				"title": {
-					"en": "Switch camera",
-					"nl": "Camera switchen"
-				},
-				"args": [
-					{
-						"name": "whichcamera",
-						"type": "dropdown",
-						"values": [
-							{
-								"id": "on",
-								"label": {
-									"en": "Front-facing Camera",
-									"nl": "Front-facing camera"
-								}
-							},
-							{
-								"id": "off",
-								"label": {
-									"en": "Back-facing Camera",
-									"nl": "Back-facing camera"
-								}
-							}
-						]
-					},
-					{
-						"name": "device",
-						"type": "device",
-						"placeholder": {
-							"en": "Select IP Webcam",
-							"nl": "Selecteer IP Webcam"
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
 						},
 						"filter": "driver_id=bluesound"
 					}
 				]
 			}
-		]
-	}
+        ],
+        "conditions": [
+            {
+				"id": "playing",
+				"title": {
+                    "en": "!{{is|is not}} playing",
+                    "nl": "!{{is|is niet}} aan het afspelen"
+				},
+				"args": [
+                    {
+						"name": "device",
+						"type": "device",
+						"placeholder": {
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
+						},
+						"filter": "driver_id=bluesound"
+					}
+				]
+			},
+            {
+				"id": "shuffled",
+				"title": {
+                    "en": "!{{is|is not}} shuffled",
+                    "nl": "!{{is|is niet}} shuffled"
+				},
+				"args": [
+                    {
+						"name": "device",
+						"type": "device",
+						"placeholder": {
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
+						},
+						"filter": "driver_id=bluesound"
+					}
+				]
+			}
+        ],
+        "actions": [
+			{
+				"id": "repeat",
+				"title": {
+                    "en": "Repeat",
+                    "nl": "Herhaal"
+				},
+                "args": [
+                    {
+                        "type": "dropdown",
+                        "name": "repeat",
+                        "values": [
+                            {
+                                "id": "0",
+                                "label": {
+                                    "en": "On",
+                                    "nl": "Aan"
+                                }
+                            },
+                            {
+                                "id": "1",
+                                "label": {
+                                    "en": "Track",
+                                    "nl": "Track"
+                                }
+                            },
+                            {
+                                "id": "2",
+                                "label": {
+                                    "en": "Off",
+                                    "nl": "Uit"
+                                }
+                            }
+                        ]
+                    },
+                    {
+						"name": "device",
+						"type": "device",
+						"placeholder": {
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
+						},
+						"filter": "driver_id=bluesound"
+					}
+				]
+			},
+            {
+				"id": "shuffle",
+				"title": {
+                    "en": "Shuffle",
+                    "nl": "Shuffle"
+				},
+                "args": [
+                    {
+                        "type": "dropdown",
+                        "name": "shuffle",
+                        "values": [
+                            {
+                                "id": "0",
+                                "label": {
+                                    "en": "Off",
+                                    "nl": "Uit"
+                                }
+                            },
+                            {
+                                "id": "1",
+                                "label": {
+                                    "en": "On",
+                                    "nl": "Aan"
+                                }
+                            }
+                        ]
+                    },
+                    {
+						"name": "device",
+						"type": "device",
+						"placeholder": {
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
+						},
+						"filter": "driver_id=bluesound"
+					}
+				]
+			},
+            {
+				"id": "changeinput",
+				"title": {
+                    "en": "Change input",
+                    "nl": "Verander input"
+				},
+                "args": [
+                    {
+                        "type": "autocomplete",
+                        "name": "inputs",
+                        "placeholder": {
+                            "en": "Select input",
+                            "nl": "Selecteer input"
+                        }
+                    },
+                    {
+						"name": "device",
+						"type": "device",
+						"placeholder": {
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
+						},
+						"filter": "driver_id=bluesound"
+					}
+				]
+			},
+            {
+				"id": "playpreset",
+				"title": {
+                    "en": "Play Preset",
+                    "nl": "Speel preset"
+				},
+                "args": [
+                    {
+                        "type": "number",
+                        "name": "preset",
+                        "min": 1,
+                        "max": 100,
+                        "step": 1,
+                        "placeholder": {
+                            "en": "Select preset",
+                            "nl": "Selecteer preset"
+                        }
+                    },
+                    {
+						"name": "device",
+						"type": "device",
+						"placeholder": {
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
+						},
+						"filter": "driver_id=bluesound"
+					}
+				]
+			},
+            {
+				"id": "sendcommand",
+				"title": {
+                    "en": "Send Commanc",
+                    "nl": "Verstuur commando"
+				},
+                "hint": {
+					"en": "Use this card to send any custom command to to your Bluesound device, for instance Genres?service=LocalMusic",
+					"nl": "Gebruik deze card om elk aangepast commando naar je Bluesound apparaat te versturen, b.v. Genres?service=LocalMusic"
+				},
+                "args": [
+                    {
+                        "type": "text",
+                        "name": "command",
+                        "placeholder": {
+                            "en": "Command",
+                            "nl": "Commando"
+                        }
+                    },
+                    {
+						"name": "device",
+						"type": "device",
+						"placeholder": {
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
+						},
+						"filter": "driver_id=bluesound"
+					}
+				]
+			}
+        ]
+    }
 }
