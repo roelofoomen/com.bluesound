@@ -16,11 +16,6 @@ class BluesoundDevice extends Homey.Device {
         this.pollDevice(interval);
     }
 
-    onAdded() {
-        var interval = this.getSetting('polling') || 4;
-        this.pollDevice(interval);
-    }
-
     onDeleted() {
         clearInterval(this.pollingInterval);
     }
