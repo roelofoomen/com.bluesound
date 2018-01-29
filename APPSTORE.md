@@ -21,12 +21,11 @@ Add the device as you would add any device to Homey. Enter the IP address of the
 For support please use the official support topic on the forum [here](https://forum.athom.com/discussion/4559/).
 
 ## Changelog
-### 2018-01-29 - v1.0.2
-- FIX: remove mock data
-
-### 2018-01-28 - v1.0.1
+### 2018-01-29 - v1.0.1
 - FIX: added missing node modules
 - FIX: translation issues
+- FIX: remove mock data
+- FIX: tag for track on start playing trigger card
 
 ### 2018-01-23 - v1.0.0
 - NEW: initial version

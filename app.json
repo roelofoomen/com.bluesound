@@ -9,7 +9,7 @@
 		"en": [ "bluesound", "music" ],
 		"nl": [ "bluesound", "muziek" ]
 	},
-	"version": "1.0.2",
+	"version": "1.0.1",
 	"compatibility": "1.x >=1.5.0",
 	"author": {
 		"name": "Jelger Haanstra",
@@ -127,7 +127,7 @@
                         "example": "Dirt"
                     },
                     {
-                        "name": "title",
+                        "name": "track",
                         "type": "string",
                         "title": {
                             "en": "Track",
