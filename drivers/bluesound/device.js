@@ -104,7 +104,7 @@ class BluesoundDevice extends Homey.Device {
                     if (this.getStoreValue('track') != result.track) {
                         this.setStoreValue('track', result.track);
                         if (result.track !== 'Not available') {
-                            Homey.ManagerFlow.getCard(this, {artist: result.artist, track: result.track, album: result.album}, {})
+                            Homey.ManagerFlow.getCard('trigger', 'track_changed').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {})
                         }
                     }
                     if (this.getStoreValue('album') != result.album) {
