@@ -27,6 +27,7 @@ For support please use the official support topic on the forum [here](https://fo
 - FIX: remove mock data
 - FIX: tag for track on start playing trigger card
 - FIX: changed track trigger card
+- POSSIBLE FIX: for track being unavailable when streaming (there is no name tag and it needs deduction from title tags)
 
 ### 2018-01-23 - v1.0.0
 - NEW: initial version
