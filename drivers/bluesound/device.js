@@ -10,7 +10,7 @@ class BluesoundDevice extends Homey.Device {
         this.registerCapabilityListener('speaker_prev', this.onCapabilitySpeakerPrev.bind(this));
         this.registerCapabilityListener('speaker_next', this.onCapabilitySpeakerNext.bind(this));
         this.registerCapabilityListener('volume_set', this.onCapabilityVolumeSet.bind(this));
-        this.registerCapabilityListener('volume_mute', this.onCapabilityVolumeSet.bind(this));
+        this.registerCapabilityListener('volume_mute', this.onCapabilityVolumeMute.bind(this));
 
         var interval = this.getSetting('polling') || 4;
         this.pollDevice(interval);
@@ -48,7 +48,12 @@ class BluesoundDevice extends Homey.Device {
     }
 
     onCapabilityVolumeMute(value, opts, callback) {
-        var path = 'Volume?level=0';
+        if (value) {
+            var path = 'Volume?level=0';
+            this.setStoreValue('mutevol', this.getCapabilityValue('volume_set'));
+        } else {
+            var path = 'Volume?level='+ this.setStoreValue('mutevol');
+        }
         util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
         callback(null, value);
     }
@@ -71,10 +76,19 @@ class BluesoundDevice extends Homey.Device {
                         }
                     }
 
-                    // capability volume_set
+                    // capability volume_set and volume_mute
                     var volume = result.volume / 100;
                     if (this.getCapabilityValue('volume_set') != volume) {
                         this.setCapabilityValue('volume_set', volume);
+                    }
+                    if (volume === 0) {
+                        if (this.getCapabilityValue('volume_mute') === false) {
+                            this.setCapabilityValue('volume_mute', true);
+                        }
+                    } else {
+                        if (this.getCapabilityValue('volume_mute') === true) {
+                            this.setCapabilityValue('volume_mute', false);
+                        }
                     }
 
                     // stores values
