@@ -9,7 +9,7 @@
 		"en": [ "bluesound", "music" ],
 		"nl": [ "bluesound", "muziek" ]
 	},
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"compatibility": "1.x >=1.5.0",
 	"author": {
 		"name": "Jelger Haanstra",
@@ -405,6 +405,32 @@
                         "placeholder": {
                             "en": "Select input",
                             "nl": "Selecteer input"
+                        }
+                    },
+                    {
+						"name": "device",
+						"type": "device",
+						"placeholder": {
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
+						},
+						"filter": "driver_id=bluesound"
+					}
+				]
+			},
+            {
+				"id": "changeservice",
+				"title": {
+                    "en": "Change service",
+                    "nl": "Verander service"
+				},
+                "args": [
+                    {
+                        "type": "autocomplete",
+                        "name": "services",
+                        "placeholder": {
+                            "en": "Select service",
+                            "nl": "Selecteer service"
                         }
                     },
                     {

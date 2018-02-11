@@ -31,7 +31,14 @@ class BluesoundDevice extends Homey.Device {
     }
 
     onCapabilitySpeakerPrev(value, opts, callback) {
-        util.sendCommand('Back', this.getSetting('address'), this.getSetting('port'));
+        util.sendCommand('Back', this.getSetting('address'), this.getSetting('port'))
+            .then(result => {
+                // send command twice because first command jumps to start of current track
+                util.sendCommand('Back', this.getSetting('address'), this.getSetting('port'));
+            })
+            .catch(error => {
+                callback(error, null);
+            })
         callback(null, value);
     }
 
@@ -41,7 +48,7 @@ class BluesoundDevice extends Homey.Device {
     }
 
     onCapabilityVolumeSet(value, opts, callback) {
-        var volume = value.toFixed(1) * 100;
+        var volume = value.toFixed(2) * 100;
         var path = 'Volume?level='+ volume;
         util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
         callback(null, value);
@@ -52,7 +59,8 @@ class BluesoundDevice extends Homey.Device {
             var path = 'Volume?level=0';
             this.setStoreValue('mutevol', this.getCapabilityValue('volume_set'));
         } else {
-            var path = 'Volume?level='+ this.setStoreValue('mutevol');
+            var volume = this.setStoreValue('mutevol') * 100;
+            var path = 'Volume?level='+ volume;
         }
         util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
         callback(null, value);
@@ -78,6 +86,7 @@ class BluesoundDevice extends Homey.Device {
 
                     // capability volume_set and volume_mute
                     var volume = result.volume / 100;
+                    this.setStoreValue('mutevol', volume);
                     if (this.getCapabilityValue('volume_set') != volume) {
                         this.setCapabilityValue('volume_set', volume);
                     }
@@ -94,10 +103,10 @@ class BluesoundDevice extends Homey.Device {
                     // stores values
                     if (this.getStoreValue('state') != result.state) {
                         this.setStoreValue('state', result.state);
-                        if(this.getStoreValue('state') == "play") {
-                            Homey.ManagerFlow.getCard('trigger', 'start_playing').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {})
-                        } else {
+                        if(this.getStoreValue('state') !== "stop") {
                             Homey.ManagerFlow.getCard('trigger', 'stop_playing').trigger(this, {}, {})
+                        } else {
+                            Homey.ManagerFlow.getCard('trigger', 'start_playing').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {})
                         }
                     }
                     if (this.getStoreValue('service') != result.service) {
@@ -109,24 +118,24 @@ class BluesoundDevice extends Homey.Device {
                     if (this.getStoreValue('repeat') != result.repeat) {
                         this.setStoreValue('repeat', result.repeat);
                     }
-                    if (this.getStoreValue('artist') != result.artist) {
+                    if (this.getStoreValue('artist') != result.artist && (result.state !== 'stop' || result.state !== 'pause')) {
                         this.setStoreValue('artist', result.artist);
                         if (result.artist !== 'Not available') {
                             Homey.ManagerFlow.getCard('trigger', 'artist_changed').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {})
                         }
                     }
-                    if (this.getStoreValue('track') != result.track) {
+                    if (this.getStoreValue('track') != result.track && (result.state !== 'stop' || result.state !== 'pause')) {
                         this.setStoreValue('track', result.track);
                         if (result.track !== 'Not available') {
                             Homey.ManagerFlow.getCard('trigger', 'track_changed').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {})
                         }
                     }
-                    if (this.getStoreValue('album') != result.album) {
+                    if (this.getStoreValue('album') != result.album && (result.state !== 'stop' || result.state !== 'pause')) {
                         this.setStoreValue('album', result.album);
                     }
                 })
                 .catch(error => {
-                    console.log(error);
+                    this.log(error);
                     this.setUnavailable(Homey.__('Unreachable'));
                     this.pingDevice();
                 })

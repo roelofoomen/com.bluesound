@@ -73,6 +73,23 @@ class BluesoundApp extends Homey.App {
                 return util.getInputs(args.device.getSetting('address'), args.device.getSetting('port'));
             })
 
+        new Homey.FlowCardAction('changeservice')
+            .register()
+            .registerRunListener((args, state) => {
+                var path = 'Genres?service='+ args.services.name +'';
+                util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
+                    .then(result => {
+                        return Promise.resolve(true);
+                    })
+                    .catch(error => {
+                        return Promise.resolve(false);
+                    })
+            })
+            .getArgument('services')
+            .registerAutocompleteListener((query, args) => {
+                return util.getServices(args.device.getSetting('address'), args.device.getSetting('port'));
+            })
+
         new Homey.FlowCardAction('playpreset')
             .register()
             .registerRunListener((args, state) => {

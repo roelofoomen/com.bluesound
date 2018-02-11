@@ -10,6 +10,7 @@ Use Homey to control your [Bluesound](http://www.bluesound.com) devices.
 - [CONDITION] is shuffled
 - [ACTION] All default action cards for speaker capability like play, stop, pause and change volume
 - [ACTION] Change input
+- [ACTION] Change service
 - [ACTION] Play preset
 - [ACTION] Shuffle on/off
 - [ACTION] Repeat on/track/off
@@ -21,6 +22,14 @@ Add the device as you would add any device to Homey. Enter the IP address of the
 For support please use the official support topic on the forum [here](https://forum.athom.com/discussion/4559/).
 
 ## Changelog
+### 2018-02-11 - v1.1.0
+- FIX: small decimal fix when setting volume
+- FIX: unmute action cards fixed
+- FIX: start playing trigger card fixed
+- FIX: hopefully fix the previous action card (send command twice to actually go back a track instead of jump to start of current track)
+- UPDATE: added extra checks to prevent artist, track and album tags being updated in unwanted scenarios
+- UPDATE: added a change service action card
+
 ### 2018-02-06 - v1.0.2
 - FIX: mute / unmute action cards fixed
 
