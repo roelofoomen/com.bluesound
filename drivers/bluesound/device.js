@@ -59,7 +59,7 @@ class BluesoundDevice extends Homey.Device {
             var path = 'Volume?level=0';
             this.setStoreValue('mutevol', this.getCapabilityValue('volume_set'));
         } else {
-            var volume = this.setStoreValue('mutevol') * 100;
+            var volume = this.getStoreValue('mutevol') * 100;
             var path = 'Volume?level='+ volume;
         }
         util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));

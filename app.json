@@ -9,7 +9,7 @@
 		"en": [ "bluesound", "music" ],
 		"nl": [ "bluesound", "muziek" ]
 	},
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"compatibility": "1.x >=1.5.0",
 	"author": {
 		"name": "Jelger Haanstra",
@@ -26,6 +26,7 @@
 	"bugs": {
 		"url": "https://github.com/jghaanstra/com.bluesound/issues"
 	},
+    "athomForumDiscussionId": 4559,
 	"images": {
 		"large": "./assets/images/large.png",
 		"small": "./assets/images/small.png"
@@ -476,7 +477,7 @@
             {
 				"id": "sendcommand",
 				"title": {
-                    "en": "Send Commanc",
+                    "en": "Send Command",
                     "nl": "Verstuur commando"
 				},
                 "hint": {

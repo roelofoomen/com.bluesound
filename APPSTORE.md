@@ -22,24 +22,6 @@ Add the device as you would add any device to Homey. Enter the IP address of the
 For support please use the official support topic on the forum [here](https://forum.athom.com/discussion/4559/).
 
 ## Changelog
-### 2018-02-11 - v1.1.0
-- FIX: small decimal fix when setting volume
-- FIX: unmute action cards fixed
-- FIX: start playing trigger card fixed
-- FIX: hopefully fix the previous action card (send command twice to actually go back a track instead of jump to start of current track)
-- UPDATE: added extra checks to prevent artist, track and album tags being updated in unwanted scenarios
-- UPDATE: added a change service action card
-
-### 2018-02-06 - v1.0.2
-- FIX: mute / unmute action cards fixed
-
-### 2018-01-30 - v1.0.1
-- FIX: added missing node modules
-- FIX: translation issues
-- FIX: remove mock data
-- FIX: tag for track on start playing trigger card
-- FIX: changed track trigger card
-- POSSIBLE FIX: for track being unavailable when streaming (there is no name tag and it needs deduction from title tags)
-
-### 2018-01-23 - v1.0.0
-- NEW: initial version
+### 2018-03-17 - v1.1.1
+- FIX: unmute action cards fixed (for real now)
+- FIX: small type-o in the send command action card
