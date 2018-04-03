@@ -103,6 +103,33 @@ class BluesoundApp extends Homey.App {
                     })
             })
 
+        new Homey.FlowCardAction('addslave')
+            .register()
+            .registerRunListener((args, state) => {
+                var groupname = encodeURI(args.group);
+                var path = 'AddSlave?slave='+ args.ip +'&amp;group='+ groupname;
+                util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
+                    .then(result => {
+                        return Promise.resolve(result);
+                    })
+                    .catch(error => {
+                        return Promise.reject(error);
+                    })
+            })
+
+        new Homey.FlowCardAction('removeslave')
+            .register()
+            .registerRunListener((args, state) => {
+                var path = 'RemoveSlave?slave='+ args.ip;
+                util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
+                    .then(result => {
+                        return Promise.resolve(result);
+                    })
+                    .catch(error => {
+                        return Promise.reject(error);
+                    })
+            })
+
         new Homey.FlowCardAction('sendcommand')
             .register()
             .registerRunListener((args, state) => {

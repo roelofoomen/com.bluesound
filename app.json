@@ -9,7 +9,7 @@
 		"en": [ "bluesound", "music" ],
 		"nl": [ "bluesound", "muziek" ]
 	},
-	"version": "1.1.1",
+	"version": "1.2.0",
 	"compatibility": "1.x >=1.5.0",
 	"author": {
 		"name": "Jelger Haanstra",
@@ -461,6 +461,66 @@
                         "placeholder": {
                             "en": "Select preset",
                             "nl": "Selecteer preset"
+                        }
+                    },
+                    {
+						"name": "device",
+						"type": "device",
+						"placeholder": {
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
+						},
+						"filter": "driver_id=bluesound"
+					}
+				]
+			},
+            {
+				"id": "addslave",
+				"title": {
+                    "en": "Add slave",
+                    "nl": "Toevoegen slave"
+				},
+                "args": [
+                    {
+                        "type": "text",
+                        "name": "ip",
+                        "placeholder": {
+                            "en": "Slave IP",
+                            "nl": "Slave IP"
+                        }
+                    },
+                    {
+                        "type": "text",
+                        "name": "group",
+                        "placeholder": {
+                            "en": "Group Name",
+                            "nl": "Groepsnaam"
+                        }
+                    },
+                    {
+						"name": "device",
+						"type": "device",
+						"placeholder": {
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
+						},
+						"filter": "driver_id=bluesound"
+					}
+				]
+			},
+            {
+				"id": "removeslave",
+				"title": {
+                    "en": "Remove slave",
+                    "nl": "Verwijderen slave"
+				},
+                "args": [
+                    {
+                        "type": "text",
+                        "name": "ip",
+                        "placeholder": {
+                            "en": "Slave IP",
+                            "nl": "Slave IP"
                         }
                     },
                     {
