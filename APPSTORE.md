@@ -24,6 +24,9 @@ Add the device as you would add any device to Homey. Enter the IP address of the
 For support please use the official support topic on the forum [here](https://forum.athom.com/discussion/4559/).
 
 ## Changelog
+### 2018-04-05 - v1.2.1
+- FIX: coding error in vulme set action cards fixed
+
 ### 2018-04-03 - v1.2.0
 - NEW: added add and remove slave action cards
 - FIX: unmute action cards fixed (hopefully for really real now)
