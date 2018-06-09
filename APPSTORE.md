@@ -24,5 +24,5 @@ Add the device as you would add any device to Homey. Enter the IP address of the
 For support please use the official support topic on the forum [here](https://forum.athom.com/discussion/4559/).
 
 ## Changelog
-### 2018-04-30 - v1.2.2
-- UPDATE: updated dependencies to fix security issue in on of the packages, no functionality changes
+### 2018-06-09 - v1.2.3
+- FIX: fix the is (not) playing condition card
