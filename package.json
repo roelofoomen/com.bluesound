@@ -1,11 +1,11 @@
 {
   "name": "com.bluesound",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Homey app for Bluesound devices",
   "main": "app.js",
   "dependencies": {
-    "hoek": "^5.0.3",
-    "request": "^2.85.0",
+    "hoek": "^5.0.4",
+    "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
     "xml2js": "^0.4.19"
   },
