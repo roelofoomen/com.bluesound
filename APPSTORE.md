@@ -25,7 +25,7 @@ For support please use the official support topic on the forum [here](https://co
 
 ## Changelog
 ### 2018-09-08 - v1.2.5
-* REFACTORING: switched from request node module to node-fetch (reduced footprint from 8MB to 1MB)
+* REFACTORING: switched from request node module to node-fetch (reduced footprint from 7MB to 500kB)
 
 ### 2018-08-22 - v1.2.4
 * UPDATE: updated app manifest to include id of new forum support topic
