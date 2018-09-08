@@ -24,6 +24,9 @@ Add the device as you would add any device to Homey. Enter the IP address of the
 For support please use the official support topic on the forum [here](https://community.athom.com/t/121).
 
 ## Changelog
+### 2018-09-08 - v1.2.5
+* REFACTORING: switched from request node module to node-fetch (reduced footprint from 8MB to 1MB)
+
 ### 2018-08-22 - v1.2.4
 * UPDATE: updated app manifest to include id of new forum support topic
 * UPDATE: updated node packages to latest versions
