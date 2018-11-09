@@ -1,6 +1,7 @@
 {
 	"id": "com.bluesound",
 	"sdk": 2,
+	"brandColor": "#000000",
 	"name": {
 		"en": "Bluesound",
 		"nl": "Bluesound"
@@ -9,7 +10,7 @@
 		"en": [ "bluesound", "music" ],
 		"nl": [ "bluesound", "muziek" ]
 	},
-	"version": "1.2.6",
+	"version": "1.2.7",
 	"compatibility": "1.x >=1.5.0",
 	"author": {
 		"name": "Jelger Haanstra",
