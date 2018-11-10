@@ -1,7 +1,7 @@
 {
 	"id": "com.bluesound",
 	"sdk": 2,
-	"brandColor": "#000000",
+  "brandColor": "#000000",
 	"name": {
 		"en": "Bluesound",
 		"nl": "Bluesound"
@@ -54,7 +54,7 @@
 			},
 			"class": "speaker",
 			"capabilities": [
-                "speaker_playing",
+        "speaker_playing",
 				"speaker_prev",
 				"speaker_next",
 				"volume_set",
@@ -111,63 +111,63 @@
 			]
 		}
 	],
-    "flow": {
-        "triggers": [
-            {
-				"id": "start_playing",
-				"title": {
-                    "en": "Start Playing",
-                    "nl": "Start afspelen"
-				},
-                "tokens": [
-                    {
-                        "name": "album",
-                        "type": "string",
-                        "title": {
-                            "en": "Album",
-                            "nl": "Album"
-                        },
-                        "example": "Dirt"
-                    },
-                    {
-                        "name": "track",
-                        "type": "string",
-                        "title": {
-                            "en": "Track",
-                            "nl": "Track"
-                        },
-                        "example": "Would?"
-                    },
-                    {
-                        "name": "artist",
-                        "type": "string",
-                        "title": {
-                            "en": "Artist",
-                            "nl": "Artist"
-                        },
-                        "example": "Alice in Chains"
-                    }
-                ],
-				"args": [
-                    {
-						"name": "device",
-						"type": "device",
-						"placeholder": {
-							"en": "Select Bluesound device",
-							"nl": "Selecteer Bluesound apparaat"
-						},
-						"filter": "driver_id=bluesound"
-					}
+  "flow": {
+    "triggers": [
+      {
+			  "id": "start_playing",
+			  "title": {
+          "en": "Start Playing",
+          "nl": "Start afspelen"
+			  },
+        "tokens": [
+          {
+            "name": "album",
+            "type": "string",
+            "title": {
+              "en": "Album",
+              "nl": "Album"
+            },
+            "example": "Dirt"
+          },
+          {
+            "name": "track",
+            "type": "string",
+            "title": {
+                "en": "Track",
+                "nl": "Track"
+            },
+            "example": "Would?"
+          },
+          {
+            "name": "artist",
+            "type": "string",
+            "title": {
+              "en": "Artist",
+              "nl": "Artist"
+            },
+            "example": "Alice in Chains"
+          }
+        ],
+	      "args": [
+          {
+		        "name": "device",
+		        "type": "device",
+		        "placeholder": {
+			        "en": "Select Bluesound device",
+			        "nl": "Selecteer Bluesound apparaat"
+		        },
+		        "filter": "driver_id=bluesound"
+	        }
 				]
 			},
-            {
+      {
 				"id": "stop_playing",
 				"title": {
-                    "en": "Stop Playing",
-                    "nl": "Stop afspelen"
+          "en": "Stop Playing",
+          "nl": "Stop afspelen"
 				},
 				"args": [
-                    {
+          {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
@@ -178,43 +178,43 @@
 					}
 				]
 			},
-            {
+      {
 				"id": "artist_changed",
 				"title": {
-                    "en": "Artist changed",
-                    "nl": "Artiest gewijzigd"
+          "en": "Artist changed",
+          "nl": "Artiest gewijzigd"
 				},
-                "tokens": [
-                    {
-                        "name": "album",
-                        "type": "string",
-                        "title": {
-                            "en": "Album",
-                            "nl": "Album"
-                        },
-                        "example": "Dirt"
-                    },
-                    {
-                        "name": "track",
-                        "type": "string",
-                        "title": {
-                            "en": "Track",
-                            "nl": "Track"
-                        },
-                        "example": "Would?"
-                    },
-                    {
-                        "name": "artist",
-                        "type": "string",
-                        "title": {
-                            "en": "Artist",
-                            "nl": "Artist"
-                        },
-                        "example": "Alice in Chains"
-                    }
-                ],
+        "tokens": [
+          {
+            "name": "album",
+            "type": "string",
+            "title": {
+              "en": "Album",
+              "nl": "Album"
+            },
+            "example": "Dirt"
+          },
+          {
+            "name": "track",
+            "type": "string",
+            "title": {
+              "en": "Track",
+              "nl": "Track"
+            },
+            "example": "Would?"
+          },
+          {
+            "name": "artist",
+            "type": "string",
+            "title": {
+              "en": "Artist",
+              "nl": "Artist"
+            },
+            "example": "Alice in Chains"
+          }
+        ],
 				"args": [
-                    {
+          {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
@@ -225,43 +225,43 @@
 					}
 				]
 			},
-            {
+      {
 				"id": "track_changed",
 				"title": {
-                    "en": "Track changed",
-                    "nl": "Track gewijzigd"
+          "en": "Track changed",
+          "nl": "Track gewijzigd"
 				},
-                "tokens": [
-                    {
-                        "name": "album",
-                        "type": "string",
-                        "title": {
-                            "en": "Album",
-                            "nl": "Album"
-                        },
-                        "example": "Dirt"
-                    },
-                    {
-                        "name": "track",
-                        "type": "string",
-                        "title": {
-                            "en": "Track",
-                            "nl": "Track"
-                        },
-                        "example": "Would?"
-                    },
-                    {
-                        "name": "artist",
-                        "type": "string",
-                        "title": {
-                            "en": "Artist",
-                            "nl": "Artist"
-                        },
-                        "example": "Alice in Chains"
-                    }
-                ],
+        "tokens": [
+          {
+            "name": "album",
+            "type": "string",
+            "title": {
+              "en": "Album",
+              "nl": "Album"
+            },
+            "example": "Dirt"
+          },
+          {
+            "name": "track",
+            "type": "string",
+            "title": {
+              "en": "Track",
+              "nl": "Track"
+            },
+            "example": "Would?"
+          },
+          {
+            "name": "artist",
+            "type": "string",
+            "title": {
+              "en": "Artist",
+              "nl": "Artist"
+            },
+            "example": "Alice in Chains"
+          }
+        ],
 				"args": [
-                    {
+          {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
@@ -272,16 +272,16 @@
 					}
 				]
 			}
-        ],
-        "conditions": [
-            {
+    ],
+    "conditions": [
+      {
 				"id": "playing",
 				"title": {
-                    "en": "!{{is|is not}} playing",
-                    "nl": "!{{is|is niet}} aan het afspelen"
+          "en": "!{{is|is not}} playing",
+          "nl": "!{{is|is niet}} aan het afspelen"
 				},
 				"args": [
-                    {
+          {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
@@ -292,14 +292,14 @@
 					}
 				]
 			},
-            {
+      {
 				"id": "shuffled",
 				"title": {
-                    "en": "!{{is|is not}} shuffled",
-                    "nl": "!{{is|is niet}} shuffled"
+          "en": "!{{is|is not}} shuffled",
+          "nl": "!{{is|is niet}} shuffled"
 				},
 				"args": [
-                    {
+          {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
@@ -310,43 +310,43 @@
 					}
 				]
 			}
-        ],
-        "actions": [
+    ],
+    "actions": [
 			{
 				"id": "repeat",
 				"title": {
-                    "en": "Repeat",
-                    "nl": "Herhaal"
+          "en": "Repeat",
+          "nl": "Herhaal"
 				},
-                "args": [
-                    {
-                        "type": "dropdown",
-                        "name": "repeat",
-                        "values": [
-                            {
-                                "id": "0",
-                                "label": {
-                                    "en": "On",
-                                    "nl": "Aan"
-                                }
-                            },
-                            {
-                                "id": "1",
-                                "label": {
-                                    "en": "Track",
-                                    "nl": "Track"
-                                }
-                            },
-                            {
-                                "id": "2",
-                                "label": {
-                                    "en": "Off",
-                                    "nl": "Uit"
-                                }
-                            }
-                        ]
-                    },
-                    {
+        "args": [
+          {
+            "type": "dropdown",
+            "name": "repeat",
+            "values": [
+              {
+                "id": "0",
+                "label": {
+                  "en": "On",
+                  "nl": "Aan"
+                }
+              },
+              {
+                "id": "1",
+                "label": {
+                  "en": "Track",
+                  "nl": "Track"
+                }
+              },
+              {
+                "id": "2",
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              }
+            ]
+          },
+          {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
@@ -357,34 +357,34 @@
 					}
 				]
 			},
-            {
+      {
 				"id": "shuffle",
 				"title": {
-                    "en": "Shuffle",
-                    "nl": "Shuffle"
+          "en": "Shuffle",
+          "nl": "Shuffle"
 				},
-                "args": [
-                    {
-                        "type": "dropdown",
-                        "name": "shuffle",
-                        "values": [
-                            {
-                                "id": "0",
-                                "label": {
-                                    "en": "Off",
-                                    "nl": "Uit"
-                                }
-                            },
-                            {
-                                "id": "1",
-                                "label": {
-                                    "en": "On",
-                                    "nl": "Aan"
-                                }
-                            }
-                        ]
-                    },
-                    {
+        "args": [
+          {
+            "type": "dropdown",
+            "name": "shuffle",
+            "values": [
+              {
+                "id": "0",
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              },
+              {
+                "id": "1",
+                "label": {
+                  "en": "On",
+                  "nl": "Aan"
+                }
+              }
+            ]
+          },
+          {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
@@ -395,48 +395,48 @@
 					}
 				]
 			},
-            {
+      {
 				"id": "changeinput",
 				"title": {
-                    "en": "Change input",
-                    "nl": "Verander input"
+          "en": "Change input",
+          "nl": "Verander input"
 				},
-                "args": [
-                    {
-                        "type": "autocomplete",
-                        "name": "inputs",
-                        "placeholder": {
-                            "en": "Select input",
-                            "nl": "Selecteer input"
-                        }
-                    },
-                    {
-						"name": "device",
-						"type": "device",
-						"placeholder": {
-							"en": "Select Bluesound device",
-							"nl": "Selecteer Bluesound apparaat"
-						},
-						"filter": "driver_id=bluesound"
-					}
-				]
+        "args": [
+          {
+            "type": "autocomplete",
+            "name": "inputs",
+            "placeholder": {
+              "en": "Select input",
+              "nl": "Selecteer input"
+            }
+          },
+          {
+	          "name": "device",
+	          "type": "device",
+	          "placeholder": {
+	            "en": "Select Bluesound device",
+		          "nl": "Selecteer Bluesound apparaat"
+				    },
+				    "filter": "driver_id=bluesound"
+			    }
+			  ]
 			},
-            {
+      {
 				"id": "changeservice",
 				"title": {
-                    "en": "Change service",
-                    "nl": "Verander service"
+          "en": "Change service",
+          "nl": "Verander service"
 				},
-                "args": [
-                    {
-                        "type": "autocomplete",
-                        "name": "services",
-                        "placeholder": {
-                            "en": "Select service",
-                            "nl": "Selecteer service"
-                        }
-                    },
-                    {
+        "args": [
+          {
+            "type": "autocomplete",
+            "name": "services",
+            "placeholder": {
+              "en": "Select service",
+              "nl": "Selecteer service"
+            }
+          },
+          {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
@@ -447,25 +447,25 @@
 					}
 				]
 			},
-            {
+      {
 				"id": "playpreset",
 				"title": {
-                    "en": "Play Preset",
-                    "nl": "Speel preset"
+          "en": "Play Preset",
+          "nl": "Speel preset"
 				},
-                "args": [
-                    {
-                        "type": "number",
-                        "name": "preset",
-                        "min": 1,
-                        "max": 100,
-                        "step": 1,
-                        "placeholder": {
-                            "en": "Select preset",
-                            "nl": "Selecteer preset"
-                        }
-                    },
-                    {
+        "args": [
+          {
+            "type": "number",
+            "name": "preset",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "placeholder": {
+              "en": "Select preset",
+              "nl": "Selecteer preset"
+            }
+          },
+          {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
@@ -476,56 +476,56 @@
 					}
 				]
 			},
-            {
+      {
 				"id": "addslave",
 				"title": {
-                    "en": "Add slave",
-                    "nl": "Toevoegen slave"
+          "en": "Add slave",
+          "nl": "Toevoegen slave"
 				},
-                "args": [
-                    {
-                        "type": "text",
-                        "name": "ip",
-                        "placeholder": {
-                            "en": "Slave IP",
-                            "nl": "Slave IP"
-                        }
-                    },
-                    {
-                        "type": "text",
-                        "name": "group",
-                        "placeholder": {
-                            "en": "Group Name",
-                            "nl": "Groepsnaam"
-                        }
-                    },
-                    {
-						"name": "device",
-						"type": "device",
-						"placeholder": {
-							"en": "Select Bluesound device",
-							"nl": "Selecteer Bluesound apparaat"
-						},
-						"filter": "driver_id=bluesound"
+        "args": [
+          {
+            "type": "text",
+            "name": "ip",
+            "placeholder": {
+              "en": "Slave IP",
+              "nl": "Slave IP"
+            }
+          },
+          {
+            "type": "text",
+            "name": "group",
+            "placeholder": {
+              "en": "Group Name",
+              "nl": "Groepsnaam"
+            }
+          },
+          {
+			      "name": "device",
+		        "type": "device",
+		        "placeholder": {
+			        "en": "Select Bluesound device",
+			        "nl": "Selecteer Bluesound apparaat"
+		        },
+					  "filter": "driver_id=bluesound"
 					}
 				]
 			},
-            {
+      {
 				"id": "removeslave",
 				"title": {
-                    "en": "Remove slave",
-                    "nl": "Verwijderen slave"
+          "en": "Remove slave",
+          "nl": "Verwijderen slave"
 				},
-                "args": [
-                    {
-                        "type": "text",
-                        "name": "ip",
-                        "placeholder": {
-                            "en": "Slave IP",
-                            "nl": "Slave IP"
-                        }
-                    },
-                    {
+        "args": [
+          {
+            "type": "text",
+            "name": "ip",
+            "placeholder": {
+              "en": "Slave IP",
+              "nl": "Slave IP"
+              }
+          },
+          {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
@@ -536,26 +536,68 @@
 					}
 				]
 			},
-            {
+      {
+				"id": "switchinput",
+				"title": {
+          "en": "Switch input",
+          "nl": "Schakel input"
+				},
+        "hint": {
+					"en": "Use this card to switch to the next or previous input",
+					"nl": "Gebruik deze card om naar de vorige of volgende input te gaan"
+				},
+        "args": [
+          {
+            "type": "dropdown",
+            "name": "direction",
+            "values": [
+              {
+                "id": "previous",
+                "label": {
+                  "en": "Previous",
+                  "nl": "Vorige"
+                }
+              },
+              {
+                "id": "next",
+                "label": {
+                  "en": "Next",
+                  "nl": "Volgende"
+                }
+              }
+            ]
+          },
+          {
+						"name": "device",
+						"type": "device",
+						"placeholder": {
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
+						},
+						"filter": "driver_id=bluesound"
+					}
+				]
+			},
+      {
 				"id": "sendcommand",
 				"title": {
-                    "en": "Send Command",
-                    "nl": "Verstuur commando"
+          "en": "Send Command",
+          "nl": "Verstuur commando"
 				},
-                "hint": {
+        "hint": {
 					"en": "Use this card to send any custom command to to your Bluesound device, for instance Genres?service=LocalMusic",
 					"nl": "Gebruik deze card om elk aangepast commando naar je Bluesound apparaat te versturen, b.v. Genres?service=LocalMusic"
 				},
-                "args": [
-                    {
-                        "type": "text",
-                        "name": "command",
-                        "placeholder": {
-                            "en": "Command",
-                            "nl": "Commando"
-                        }
-                    },
-                    {
+        "args": [
+          {
+            "type": "text",
+            "name": "command",
+            "placeholder": {
+              "en": "Command",
+              "nl": "Commando"
+            }
+          },
+          {
 						"name": "device",
 						"type": "device",
 						"placeholder": {
@@ -566,6 +608,6 @@
 					}
 				]
 			}
-        ]
-    }
+    ]
+  }
 }

@@ -24,12 +24,5 @@ Add the device as you would add any device to Homey. Enter the IP address of the
 For support please use the official support topic on the forum [here](https://community.athom.com/t/121).
 
 ## Changelog
-### 2018-09-21 - v1.2.6
-* FIX: fixed a bug after refactoring
-
-### 2018-09-08 - v1.2.5
-* REFACTORING: switched from request node module to node-fetch (reduced footprint from 7MB to 500kB)
-
-### 2018-08-22 - v1.2.4
-* UPDATE: updated app manifest to include id of new forum support topic
-* UPDATE: updated node packages to latest versions
+### 2018-11-xx - v1.2.7
+* NEW: action card for changing input to next or previous input (specific input can not be selected due to limitation of the unofficial API)
