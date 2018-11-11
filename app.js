@@ -73,6 +73,59 @@ class BluesoundApp extends Homey.App {
         return util.getInputs(args.device.getSetting('address'), args.device.getSetting('port'));
       })
 
+    new Homey.FlowCardAction('switchinput')
+      .register()
+      .registerRunListener((args, state) => {
+        if (args.direction == 'down') {
+          util.sendCommand('ExternalSource?id=-', args.device.getSetting('address'), args.device.getSetting('port'))
+            .then(result => {
+              return Promise.resolve(true);
+            })
+            .catch(error => {
+              return Promise.resolve(false);
+            })
+        } else if (args.direction == 'up') {
+          util.sendCommand('ExternalSource?id=%2B', args.device.getSetting('address'), args.device.getSetting('port'))
+            .then(result => {
+              return Promise.resolve(true);
+            })
+            .catch(error => {
+              return Promise.resolve(false);
+            })
+        }
+      })
+
+    new Homey.FlowCardAction('switchselectedinput')
+      .register()
+      .registerRunListener((args, state) => {
+        const setInput = async () => {
+          try {
+            var i = 0;
+            while (i < 5) {
+              console.log('trying to set input to: ', args.input);
+
+              const command = await util.sendCommand('ExternalSource?id=%2B', args.device.getSetting('address'), args.device.getSetting('port'));
+              const input = await util.getInput(args.device.getSetting('address'), args.device.getSetting('port'));
+
+              console.log('input is now switched to '+ input +' while the given input is '+ args.input +'');
+              if (input == args.input) {
+                console.log('the given input matches the switched input, action card succesfull executed and loop has ended.');
+                return Promise.resolve(true);
+                break;
+              }
+              if (i == 4) {
+                console.log('input has switched 5 times and the given input has not matched the switched input, ending the action card.');
+                return Promise.resolve(false);
+              }
+              i++;
+            }
+          } catch (error) {
+            return Promise.resolve(false);
+          }
+        }
+        setInput();
+      })
+
     new Homey.FlowCardAction('changeservice')
       .register()
       .registerRunListener((args, state) => {

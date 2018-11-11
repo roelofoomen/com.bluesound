@@ -523,7 +523,7 @@
             "placeholder": {
               "en": "Slave IP",
               "nl": "Slave IP"
-              }
+            }
           },
           {
 						"name": "device",
@@ -566,6 +566,36 @@
                 }
               }
             ]
+          },
+          {
+						"name": "device",
+						"type": "device",
+						"placeholder": {
+							"en": "Select Bluesound device",
+							"nl": "Selecteer Bluesound apparaat"
+						},
+						"filter": "driver_id=bluesound"
+					}
+				]
+			},
+      {
+				"id": "switchselectedinput",
+				"title": {
+          "en": "[advanced] Go to input",
+          "nl": "[geadvanceerd] Naar input"
+				},
+        "hint": {
+					"en": "For advanced users only. Use this card to go to the given input, make sure you enter it correctly.",
+					"nl": "Alleen voor geadvanceerde gebruikers. Gebruik deze card om te schakelen naar de opgegeven input."
+				},
+        "args": [
+          {
+            "type": "text",
+            "name": "input",
+            "placeholder": {
+              "en": "Desired input",
+              "nl": "Gewenste input"
+            }
           },
           {
 						"name": "device",
