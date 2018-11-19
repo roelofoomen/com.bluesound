@@ -57,10 +57,14 @@ class BluesoundDevice extends Homey.Device {
 
   onCapabilityVolumeMute(value, opts, callback) {
     if (value) {
+      console.log('need to mute because mute value is: ', value);
       var path = 'Volume?level=0';
       this.setStoreValue('mutevol', this.getCapabilityValue('volume_set'));
+      console.log('saved before mute volume to: ', this.getStoreValue('mutevol'));
     } else {
+      console.log('need to unmute because mute value is: ', value);
       var volume = this.getStoreValue('mutevol') * 100;
+      console.log('going to set the volume to: ', volume);
       var path = 'Volume?level='+ volume;
     }
     util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
