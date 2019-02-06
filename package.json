@@ -1,6 +1,6 @@
 {
   "name": "com.bluesound",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Homey app for Bluesound devices",
   "main": "app.js",
   "dependencies": {
