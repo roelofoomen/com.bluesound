@@ -24,6 +24,6 @@ Add the device as you would add any device to Homey. Enter the IP address of the
 For support please use the official support topic on the forum [here](https://community.athom.com/t/121).
 
 ## Changelog
-### 2018-12-14 - v1.2.7
-* NEW: action card for changing input to next or previous input
-* EXPERIMENTAL: action card for changing input to a given input (will switch through inputs until given input matches the switched input)
+### v1.2.8 - 2018-02-06
+* FIX: improvements to pairing template for firmware 2.x
+* FIX: removed experimental card for switching input based on user input

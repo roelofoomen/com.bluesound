@@ -10,8 +10,8 @@
 		"en": [ "bluesound", "music" ],
 		"nl": [ "bluesound", "muziek" ]
 	},
-	"version": "1.2.7",
-	"compatibility": ">=1.5.12",
+	"version": "1.2.8",
+	"compatibility": ">=2.0.0",
 	"author": {
 		"name": "Jelger Haanstra",
 		"email": "homey@solidewebservices.com",
@@ -566,36 +566,6 @@
                 }
               }
             ]
-          },
-          {
-						"name": "device",
-						"type": "device",
-						"placeholder": {
-							"en": "Select Bluesound device",
-							"nl": "Selecteer Bluesound apparaat"
-						},
-						"filter": "driver_id=bluesound"
-					}
-				]
-			},
-      {
-				"id": "switchselectedinput",
-				"title": {
-          "en": "[advanced] Go to input",
-          "nl": "[geadvanceerd] Naar input"
-				},
-        "hint": {
-					"en": "For advanced users only. Use this card to go to the given input, make sure you enter it correctly.",
-					"nl": "Alleen voor geadvanceerde gebruikers. Gebruik deze card om te schakelen naar de opgegeven input."
-				},
-        "args": [
-          {
-            "type": "text",
-            "name": "input",
-            "placeholder": {
-              "en": "Desired input",
-              "nl": "Gewenste input"
-            }
           },
           {
 						"name": "device",
