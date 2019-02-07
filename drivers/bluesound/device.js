@@ -6,65 +6,55 @@ const util = require('/lib/util.js');
 class BluesoundDevice extends Homey.Device {
 
   onInit() {
-    this.registerCapabilityListener('speaker_playing', this.onCapabilitySpeakerPlaying.bind(this));
-    this.registerCapabilityListener('speaker_prev', this.onCapabilitySpeakerPrev.bind(this));
-    this.registerCapabilityListener('speaker_next', this.onCapabilitySpeakerNext.bind(this));
-    this.registerCapabilityListener('volume_set', this.onCapabilityVolumeSet.bind(this));
-    this.registerCapabilityListener('volume_mute', this.onCapabilityVolumeMute.bind(this));
-
     var interval = this.getSetting('polling') || 4;
     this.pollDevice(interval);
+
+    // LISTENERS FOR UPDATING CAPABILITIES
+    this.registerCapabilityListener('speaker_playing', (value, opts) => {
+      if (value) {
+        return util.sendCommand('Play', this.getSetting('address'), this.getSetting('port'));
+      } else {
+        return util.sendCommand('Pause', this.getSetting('address'), this.getSetting('port'));
+      }
+    });
+
+    this.registerCapabilityListener('speaker_prev', (value, opts) => {
+      util.sendCommand('Back', this.getSetting('address'), this.getSetting('port'))
+        .then(result => {
+          // send command twice because first command jumps to start of current track
+          return util.sendCommand('Back', this.getSetting('address'), this.getSetting('port'));
+        })
+        .catch(error => {
+          return Promise.reject(error);
+        })
+    });
+
+    this.registerCapabilityListener('speaker_next', (value, opts) => {
+      return util.sendCommand('Skip', this.getSetting('address'), this.getSetting('port'));
+    });
+
+    this.registerCapabilityListener('volume_set', (value, opts) => {
+      this.setStoreValue('mutevol', value.toFixed(2));
+      var volume = value.toFixed(2) * 100;
+      var path = 'Volume?level='+ volume;
+      return util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
+    });
+
+    this.registerCapabilityListener('volume_mute', (value, opts) => {
+      if (value) {
+        var path = 'Volume?level=0';
+        this.setStoreValue('mutevol', this.getCapabilityValue('volume_set'));
+      } else {
+        var volume = this.getStoreValue('mutevol') * 100;
+        var path = 'Volume?level='+ volume;
+      }
+      return util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
+    });
+
   }
 
   onDeleted() {
     clearInterval(this.pollingInterval);
-  }
-
-  // LISTENERS FOR UPDATING CAPABILITIES
-  onCapabilitySpeakerPlaying(value, opts, callback) {
-    if (value) {
-      util.sendCommand('Play', this.getSetting('address'), this.getSetting('port'));
-    } else {
-      util.sendCommand('Pause', this.getSetting('address'), this.getSetting('port'));
-    }
-    callback(null, value);
-  }
-
-  onCapabilitySpeakerPrev(value, opts, callback) {
-    util.sendCommand('Back', this.getSetting('address'), this.getSetting('port'))
-      .then(result => {
-        // send command twice because first command jumps to start of current track
-        util.sendCommand('Back', this.getSetting('address'), this.getSetting('port'));
-      })
-      .catch(error => {
-        callback(error, null);
-      })
-    callback(null, value);
-  }
-
-  onCapabilitySpeakerNext(value, opts, callback) {
-    util.sendCommand('Skip', this.getSetting('address'), this.getSetting('port'));
-    callback(null, value);
-  }
-
-  onCapabilityVolumeSet(value, opts, callback) {
-    this.setStoreValue('mutevol', value.toFixed(2));
-    var volume = value.toFixed(2) * 100;
-    var path = 'Volume?level='+ volume;
-    util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
-    callback(null, value);
-  }
-
-  onCapabilityVolumeMute(value, opts, callback) {
-    if (value) {
-      var path = 'Volume?level=0';
-      this.setStoreValue('mutevol', this.getCapabilityValue('volume_set'));
-    } else {
-      var volume = this.getStoreValue('mutevol') * 100;
-      var path = 'Volume?level='+ volume;
-    }
-    util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
-    callback(null, value);
   }
 
   // HELPER FUNCTIONS

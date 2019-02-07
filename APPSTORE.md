@@ -24,6 +24,7 @@ Add the device as you would add any device to Homey. Enter the IP address of the
 For support please use the official support topic on the forum [here](https://community.athom.com/t/121).
 
 ## Changelog
-### v1.2.8 - 2018-02-06
+### v1.3.0 - 2018-02-07
 * FIX: improvements to pairing template for firmware 2.x
 * FIX: removed experimental card for switching input based on user input
+* FIX: code refactoring in driver (replace callbacks with promises)
