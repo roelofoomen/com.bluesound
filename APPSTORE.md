@@ -25,5 +25,5 @@ Add the device as you would add any device to Homey. Enter the IP address of the
 For support please use the official support topic on the forum [here](https://community.athom.com/t/121).
 
 ## Changelog
-### v1.3.1 - 2019-04-18
-* NEW: relative volume action card
+### v1.3.2 - 2019-05-04
+* FIX: fix for relative volume action card
