@@ -10,8 +10,8 @@
 		"en": [ "bluesound", "music" ],
 		"nl": [ "bluesound", "muziek" ]
 	},
-	"version": "1.3.2",
-	"compatibility": ">=2.0.0",
+	"version": "1.3.3",
+	"compatibility": ">=3.0.0",
 	"author": {
 		"name": "Jelger Haanstra",
 		"email": "homey@solidewebservices.com",
@@ -27,16 +27,17 @@
 	"bugs": {
 		"url": "https://github.com/jghaanstra/com.bluesound/issues"
 	},
-  "athomForumDiscussionId": 4559,
   "homeyCommunityTopicId": 121,
+  "source": "https://github.com/jghaanstra/com.bluesound",
+  "homepage": "https://community.athom.com/t/121",
 	"images": {
 		"large": "./assets/images/large.png",
 		"small": "./assets/images/small.png"
 	},
 	"category": "music",
 	"description": {
-		"en": "Control your Bluesound devices",
-		"nl": "Bestuur je Bluesound apparaten"
+		"en": "Control your Bluesound devices with Homey",
+		"nl": "Bedien je Bluesound apparaten via Homey"
 	},
 	"dependencies": {
 		"net": "*"
