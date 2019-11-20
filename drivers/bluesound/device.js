@@ -77,20 +77,16 @@ class BluesoundDevice extends Homey.Device {
 
           // capability volume_set and volume_mute
           var volume = result.volume / 100;
-          if (result.volume > 0 ) {
+          if (result.volume > 0 && this.getStoreValue('mutevol') != volume) {
             this.setStoreValue('mutevol', volume);
           }
           if (this.getCapabilityValue('volume_set') != volume) {
             this.setCapabilityValue('volume_set', volume);
           }
-          if (volume === 0) {
-            if (this.getCapabilityValue('volume_mute') === false) {
-              this.setCapabilityValue('volume_mute', true);
-            }
-          } else {
-            if (this.getCapabilityValue('volume_mute') === true) {
-              this.setCapabilityValue('volume_mute', false);
-            }
+          if (volume === 0 && this.getCapabilityValue('volume_mute') === false) {
+            this.setCapabilityValue('volume_mute', true);
+          } else if (volume != 0 && this.getCapabilityValue('volume_mute') === true) {
+            this.setCapabilityValue('volume_mute', false);
           }
 
           // stores values
