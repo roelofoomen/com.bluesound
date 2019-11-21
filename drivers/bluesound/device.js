@@ -43,12 +43,9 @@ class BluesoundDevice extends Homey.Device {
     this.registerCapabilityListener('volume_mute', (value, opts) => {
       if (value) {
         var path = 'Volume?level=0';
-        this.setStoreValue('mutevol', this.getCapabilityValue('volume_set'));
       } else {
-        var volume = this.getStoreValue('mutevol') * 100;
-        var path = 'Volume?level='+ volume;
+        this.setCapabilityValue('volume_set', this.getStoreValue('mutevol'));
       }
-      return util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
     });
 
   }
@@ -77,9 +74,6 @@ class BluesoundDevice extends Homey.Device {
 
           // capability volume_set and volume_mute
           var volume = result.volume / 100;
-          if (result.volume > 0 && this.getStoreValue('mutevol') != volume) {
-            this.setStoreValue('mutevol', volume);
-          }
           if (this.getCapabilityValue('volume_set') != volume) {
             this.setCapabilityValue('volume_set', volume);
           }
