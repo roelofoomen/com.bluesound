@@ -34,6 +34,8 @@ class BluesoundDevice extends Homey.Device {
     });
 
     this.registerCapabilityListener('volume_set', (value, opts) => {
+      console.log('capability listener volume_set');
+      console.log('received new volume: ', value.toFixed(2));
       this.setStoreValue('mutevol', value.toFixed(2));
       var volume = value.toFixed(2) * 100;
       var path = 'Volume?level='+ volume;
