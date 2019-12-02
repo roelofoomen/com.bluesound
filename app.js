@@ -121,7 +121,8 @@ class BluesoundApp extends Homey.App {
         if (new_volume > 0 ) {
           args.device.setStoreValue('mutevol', new_volume);
         }
-        var path = 'Volume?level='+ new_volume;
+        var calculated_volume = new_volume * 100;
+        var path = 'Volume?level='+ calculated_volume;
         return util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
       })
 
