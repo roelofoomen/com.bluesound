@@ -114,10 +114,15 @@ class BluesoundApp extends Homey.App {
         if (args.volume >= 0) {
           var new_volume = current_volume + (current_volume * args.volume);
         } else {
-          var new_volume = current_volume - (current_volume * args.volume);
+          var new_volume = (current_volume * args.volume) + current_volume;
         }
         console.log('desired new volume: ', new_volume);
-        return args.device.setCapabilityValue('volume_set', new_volume);
+        //return args.device.setCapabilityValue('volume_set', new_volume);
+        if (new_volume > 0 ) {
+          args.device.setStoreValue('mutevol', new_volume);
+        }
+        var path = 'Volume?level='+ new_volume;
+        return util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
       })
 
     new Homey.FlowCardAction('sendcommand')
