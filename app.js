@@ -107,17 +107,12 @@ class BluesoundApp extends Homey.App {
     new Homey.FlowCardAction('setRelativeVolume')
       .register()
       .registerRunListener((args, state) => {
-        console.log('Triggering relative volume card');
         var current_volume = args.device.getCapabilityValue('volume_set');
-        console.log('current volume: ', current_volume);
-        console.log('relative change: ', args.volume);
         if (args.volume >= 0) {
           var new_volume = current_volume + (current_volume * args.volume);
         } else {
           var new_volume = (current_volume * args.volume) + current_volume;
         }
-        console.log('desired new volume: ', new_volume);
-        //return args.device.setCapabilityValue('volume_set', new_volume);
         if (new_volume > 0 ) {
           args.device.setStoreValue('mutevol', new_volume);
         }

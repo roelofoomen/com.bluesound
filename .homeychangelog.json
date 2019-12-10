@@ -1,5 +1,8 @@
 {
   "1.3.3": {
     "en": "Moved installation instructions from app store to community support topic"
+  },
+  "1.3.4": {
+    "en": "Fixed issue with relative volume action card."
   }
 }
