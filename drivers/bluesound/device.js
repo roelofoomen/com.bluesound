@@ -85,12 +85,12 @@ class BluesoundDevice extends Homey.Device {
 
           // stores values
           if (this.getStoreValue('state') != result.state) {
-            this.setStoreValue('state', result.state);
-            if(this.getStoreValue('state') !== "stop") {
-              Homey.ManagerFlow.getCard('trigger', 'stop_playing').trigger(this, {}, {})
-            } else {
+            if(result.state !== 'stop') {
               Homey.ManagerFlow.getCard('trigger', 'start_playing').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {})
+            } else {
+              Homey.ManagerFlow.getCard('trigger', 'stop_playing').trigger(this, {}, {})
             }
+            this.setStoreValue('state', result.state);
           }
           if (this.getStoreValue('service') != result.service) {
             this.setStoreValue('service', result.service);
