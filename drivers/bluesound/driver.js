@@ -1,31 +1,34 @@
-"use strict";
+'use strict';
 
 const Homey = require('homey');
-const util = require('/lib/util.js');
+const Util = require('/lib/util.js');
 
 class BluesoundDriver extends Homey.Driver {
 
   onInit() {
-    new Homey.FlowCardTriggerDevice('start_playing').register();
-    new Homey.FlowCardTriggerDevice('stop_playing').register();
-    new Homey.FlowCardTriggerDevice('artist_changed').register();
-    new Homey.FlowCardTriggerDevice('track_changed').register();
+    if (!this.util) this.util = new Util({homey: this.homey });
+
+    this.homey.flow.getDeviceTriggerCard('start_playing');
+    this.homey.flow.getDeviceTriggerCard('stop_playing');
+    this.homey.flow.getDeviceTriggerCard('artist_changed');
+    this.homey.flow.getDeviceTriggerCard('track_changed');
   }
 
-  onPair(socket) {
-    socket.on('testConnection', function(data, callback) {
-      util.sendCommand('SyncStatus', data.address, data.port)
-        .then(response => {
+  onPair(session) {
+    session.setHandler('testConnection', async (data) => {
+      try {
+        let response = await this.util.sendCommand('SyncStatus', data.address, data.port);
+        if (response) {
           var result = {
             brand: response.SyncStatus.$.brand,
 						model: response.SyncStatus.$.modelName,
             mac: response.SyncStatus.$.mac
           }
-          callback(false, result);
-        })
-        .catch(error => {
-          callback(error, null);
-        })
+          return Promise.resolve(result);
+        }
+      } catch (error) {
+        return Promise.reject(error);
+      }
     });
   }
 

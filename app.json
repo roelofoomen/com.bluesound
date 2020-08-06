@@ -1,6 +1,6 @@
 {
 	"id": "com.bluesound",
-	"sdk": 2,
+	"sdk": 3,
   "brandColor": "#000000",
 	"name": {
 		"en": "Bluesound",
@@ -10,8 +10,8 @@
 		"en": [ "bluesound", "music" ],
 		"nl": [ "bluesound", "muziek" ]
 	},
-	"version": "1.3.6",
-	"compatibility": ">=3.0.0",
+	"version": "3.0.0",
+	"compatibility": ">=5.0.0",
 	"author": {
 		"name": "Jelger Haanstra",
 		"email": "homey@solidewebservices.com",

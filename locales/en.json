@@ -1,20 +1,25 @@
 {
-    "pair": {
-		"title": "Add Bluesound device",
-        "nosettings": "Please fill in all the required fields.",
-        "servererror": "Error 500: internal server error",
-        "timeout": "Timeout error: make sure you have entered the correct IP address and that your Bluesound is online.",
-        "unknownerror": "Unknown error, are you sure you have entered the correct IP address and Homey is on the same network as the Bluesound device? Please check your settings and try again.",
-        "intro": "Enter the IP address and port of your Bluesound device.",
-        "address": "IP Address",
-        "port": "Port",
-        "polling": "Polling Frequency",
-        "success": "Bluesound device added succesfully.",
-        "test" : "Test Connection",
-        "testing" : "Bluesound connection test succesfull, you can now connect the Bluesound device.",
-        "connect": "Connect",
-        "name": "Device:",
-        "mac": "MAC address:"
+  "pair": {
+	"title": "Add Bluesound device",
+  "nosettings": "Please fill in all the required fields.",
+  "servererror": "Error 500: internal server error",
+  "timeout": "Timeout error: make sure you have entered the correct IP address and that your Bluesound is online.",
+  "unknownerror": "Unknown error, are you sure you have entered the correct IP address and Homey is on the same network as the Bluesound device? Please check your settings and try again.",
+  "intro": "Enter the IP address and port of your Bluesound device.",
+  "address": "IP Address",
+  "port": "Port",
+  "polling": "Polling Frequency",
+  "success": "Bluesound device added succesfully.",
+  "test" : "Test Connection",
+  "testing" : "Bluesound connection test succesfull, you can now connect the Bluesound device.",
+  "connect": "Connect",
+  "name": "Device:",
+  "mac": "MAC address:"
 	},
-    "Unreachable": "Unreachable"
+  "util": {
+    "not_available": "not available"
+  },
+  "device": {
+    "unreachable": "Unreachable"
+  }
 }

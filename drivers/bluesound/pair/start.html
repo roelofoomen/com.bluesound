@@ -1,6 +1,6 @@
 <script type="text/javascript">
 
-Homey.setTitle( __('pair.title') );
+Homey.setTitle(Homey.__('pair.title'));
 
 $(function() {
   $('#test-connection').click(function() {
@@ -19,20 +19,8 @@ $(function() {
         port   : inputport
       };
 
-      Homey.emit('testConnection', device_data, function(error, result) {
-        if(error == 401) {
-          $('.bluesound-error').show();
-          $('.bluesound-error-msg').html( __('pair.unauthorized') );
-        } else if(error == 408 || error == 504) {
-          $('.bluesound-error').show();
-          $('.bluesound-error-msg').html( __('pair.timeout') );
-        } else if(error == 500) {
-          $('.bluesound-error').show();
-          $('.bluesound-error-msg').html( __('pair.servererror') );
-        } else if(!error && !result) {
-          $('.bluesound-error').show();
-          $('.bluesound-error-msg').html( __('pair.unknownerror') );
-        } else if (result) {
+      Homey.emit('testConnection', device_data)
+        .then(result => {
           $('#mac').val(result.mac);
           $('#name').val(""+ result.brand +" "+ result.model +"");
           var bluesoundinfo = "<div class='info-row'><span class='info-label' data-i18n='pair.name'>Device:</span><span class='info-value'> "+ result.brand +" "+ result.model +"</span></div><div class='info-row'><span class='info-label' data-i18n='pair.mac'>MAC Address:</span><span class='info-value'> "+ result.mac +"</span></div>";
@@ -40,11 +28,11 @@ $(function() {
           $('.bluesound-info').show();
           $('.bluesound-info').html(bluesoundinfo);
           $('#connect').prop('disabled', false);
-        } else {
-          $('.bluesound-error').show();
-          $('.bluesound-error-msg').html( __('pair.unknownerror') );
-        }
-      });
+        })
+        .catch(error => {
+          $('.ipwebcam-error').show();
+          $('.ipwebcam-error-msg').html(error);
+        })
 
     } else {
       $('.bluesound-error').show();
@@ -77,27 +65,27 @@ $(function() {
         shuffle : 0,
         repeat  : 0,
         mutevol : 0,
-        artist  : 'Not available',
-        track   : 'Not available',
-        album   : 'Not available'
+        artist  : Homey.__('util.not_available'),
+        track   : Homey.__('util.not_available'),
+        album   : Homey.__('util.not_available')
       };
 
-      Homey.addDevice({
-        name	 : inputname,
-        data 	 : device_data,
-        settings : settings,
+      Homey.createDevice({
+        name: inputname,
+        data: device_data,
+        settings: settings,
         store  : store
-      }, function(error, result) {
-        if (error) {
+      })
+        .then(result => {
+          $('.bluesound-test').hide();
+          $('.bluesound-error').hide();
+          $('.bluesound-ok').show();
+          Homey.done();
+        })
+        .catch(error => {
           $('.bluesound-error').show();
           $('.bluesound-error-msg').html(error.message || error.toString() );
-        }
-        $('.bluesound-test').hide();
-        $('.bluesound-error').hide();
-        $('.bluesound-ok').show();
-
-        Homey.done();
-      })
+        })
 
     } else {
       $('.bluesound-error').show();

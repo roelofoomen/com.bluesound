@@ -1,17 +1,18 @@
-"use strict";
+'use strict';
 
 const Homey = require('homey');
-const util = require('/lib/util.js');
+const Util = require('/lib/util.js');
 
 class BluesoundApp extends Homey.App {
 
   onInit() {
     this.log('Initializing Bluesound app ...');
 
+    if (!this.util) this.util = new Util({homey: this.homey });
+
     // CONDITION CARDS
-    new Homey.FlowCardCondition('playing')
-      .register()
-      .registerRunListener((args, state) => {
+    this.homey.flow.getConditionCard('playing')
+      .registerRunListener(async (args) => {
         if (args.device.getStoreValue('state') !== "pause") {
           return Promise.resolve(true);
         } else {
@@ -19,9 +20,8 @@ class BluesoundApp extends Homey.App {
         }
       })
 
-    new Homey.FlowCardCondition('shuffled')
-      .register()
-      .registerRunListener((args, state) => {
+    this.homey.flow.getConditionCard('shuffled')
+      .registerRunListener(async (args) => {
         if (args.device.getStoreValue('shuffle') == 1) {
           return Promise.resolve(true);
         } else {
@@ -30,36 +30,32 @@ class BluesoundApp extends Homey.App {
       })
 
     // ACTION CARDS
-    new Homey.FlowCardAction('repeat')
-      .register()
-      .registerRunListener((args, state) => {
+    this.homey.flow.getActionCard('repeat')
+      .registerRunListener(async (args) => {
         var path = 'Repeat?state='+ args.repeat;
-        return util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
+        return this.util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
       })
 
-    new Homey.FlowCardAction('shuffle')
-      .register()
-      .registerRunListener((args, state) => {
+    this.homey.flow.getActionCard('shuffle')
+      .registerRunListener(async (args) => {
         var path = 'Shuffle?state='+ args.shuffle;
-        return util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
+        return this.util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
       })
 
-    new Homey.FlowCardAction('changeinput')
-      .register()
-      .registerRunListener((args, state) => {
+    this.homey.flow.getActionCard('changeinput')
+      .registerRunListener(async (args) => {
         var path = 'Play?url='+ args.inputs.url +'&image='+ args.inputs.inputimage +'';
-        return util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
+        return this.util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
       })
       .getArgument('inputs')
-      .registerAutocompleteListener((query, args) => {
-        return util.getInputs(args.device.getSetting('address'), args.device.getSetting('port'));
+      .registerAutocompleteListener(async (query, args) => {
+        return this.util.getInputs(args.device.getSetting('address'), args.device.getSetting('port'));
       })
 
-    new Homey.FlowCardAction('switchinput')
-      .register()
-      .registerRunListener((args, state) => {
+    this.homey.flow.getActionCard('switchinput')
+      .registerRunListener(async (args) => {
         if (args.direction == 'down') {
-          util.sendCommand('ExternalSource?id=-', args.device.getSetting('address'), args.device.getSetting('port'))
+          this.util.sendCommand('ExternalSource?id=-', args.device.getSetting('address'), args.device.getSetting('port'))
             .then(result => {
               return Promise.resolve(true);
             })
@@ -67,46 +63,41 @@ class BluesoundApp extends Homey.App {
               return Promise.resolve(false);
             })
         } else if (args.direction == 'up') {
-          return util.sendCommand('ExternalSource?id=%2B', args.device.getSetting('address'), args.device.getSetting('port'))
+          return this.util.sendCommand('ExternalSource?id=%2B', args.device.getSetting('address'), args.device.getSetting('port'))
         }
       })
 
-    new Homey.FlowCardAction('changeservice')
-      .register()
-      .registerRunListener((args, state) => {
+    this.homey.flow.getActionCard('changeservice')
+      .registerRunListener(async (args) => {
         var path = 'Genres?service='+ args.services.name +'';
-        return util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
+        return this.util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
       })
       .getArgument('services')
-      .registerAutocompleteListener((query, args) => {
-        return util.getServices(args.device.getSetting('address'), args.device.getSetting('port'));
+      .registerAutocompleteListener(async (query, args) => {
+        return this.util.getServices(args.device.getSetting('address'), args.device.getSetting('port'));
       })
 
-    new Homey.FlowCardAction('playpreset')
-      .register()
-      .registerRunListener((args, state) => {
+    this.homey.flow.getActionCard('playpreset')
+      .registerRunListener(async (args) => {
         var path = 'Preset?id='+ args.preset;
-        return util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
+        return this.util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
       })
 
-    new Homey.FlowCardAction('addslave')
-      .register()
-      .registerRunListener((args, state) => {
+    this.homey.flow.getActionCard('addslave')
+      .registerRunListener(async (args) => {
         var groupname = encodeURI(args.group);
         var path = 'AddSlave?slave='+ args.ip +'&amp;group='+ groupname;
-        return util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
+        return this.util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
       })
 
-    new Homey.FlowCardAction('removeslave')
-      .register()
-      .registerRunListener((args, state) => {
+    this.homey.flow.getActionCard('removeslave')
+      .registerRunListener(async (args) => {
         var path = 'RemoveSlave?slave='+ args.ip;
-        return util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
+        return this.util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
       })
 
-    new Homey.FlowCardAction('setRelativeVolume')
-      .register()
-      .registerRunListener((args, state) => {
+    this.homey.flow.getActionCard('setRelativeVolume')
+      .registerRunListener(async (args) => {
         var current_volume = args.device.getCapabilityValue('volume_set');
         if (args.volume >= 0) {
           var new_volume = current_volume + (current_volume * args.volume);
@@ -118,13 +109,12 @@ class BluesoundApp extends Homey.App {
         }
         var calculated_volume = new_volume * 100;
         var path = 'Volume?level='+ calculated_volume;
-        return util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
+        return this.util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
       })
 
-    new Homey.FlowCardAction('sendcommand')
-      .register()
-      .registerRunListener((args, state) => {
-        return util.sendCommand(args.command, args.device.getSetting('address'), args.device.getSetting('port'))
+    this.homey.flow.getActionCard('sendcommand')
+      .registerRunListener(async (args) => {
+        return this.util.sendCommand(args.command, args.device.getSetting('address'), args.device.getSetting('port'))
       })
   }
 }
