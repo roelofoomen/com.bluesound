@@ -11,15 +11,6 @@ class BluesoundApp extends Homey.App {
     if (!this.util) this.util = new Util({homey: this.homey });
 
     // CONDITION CARDS
-    this.homey.flow.getConditionCard('playing')
-      .registerRunListener(async (args) => {
-        if (args.device.getStoreValue('state') !== "pause") {
-          return Promise.resolve(true);
-        } else {
-          return Promise.resolve(false);
-        }
-      })
-
     this.homey.flow.getConditionCard('shuffled')
       .registerRunListener(async (args) => {
         if (args.device.getStoreValue('shuffle') == 1) {
