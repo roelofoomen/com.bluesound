@@ -66,10 +66,16 @@ class BluesoundDevice extends Homey.Device {
         .then(result => {
 
           // capability speaker_playing
+          this.log('state is: ', result.state);
+          this.log('capability speaker_playing is: ', this.getCapabilityValue('speaker_playing'));
           if (result.state != "pause" && !this.getCapabilityValue('speaker_playing')) {
+            this.log('triggering (result.state != "pause" && !this.getCapabilityValue("speaker_playing"))');
             this.setCapabilityValue('speaker_playing', true);
           } else if (result.state == "pause" && this.getCapabilityValue('speaker_playing')) {
+            this.log('triggering (result.state == "pause" && this.getCapabilityValue("speaker_playing"))');
             this.setCapabilityValue('speaker_playing', false);
+          } else {
+            this.log('none of the conditions met, no action is taken');
           }
 
           // capability volume_set and volume_mute
