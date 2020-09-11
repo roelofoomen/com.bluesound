@@ -4,7 +4,7 @@
   "description": "Homey app for Bluesound devices",
   "main": "app.js",
   "dependencies": {
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {},
