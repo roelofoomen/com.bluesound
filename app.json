@@ -10,7 +10,7 @@
 		"en": [ "bluesound", "music" ],
 		"nl": [ "bluesound", "muziek" ]
 	},
-	"version": "3.0.4",
+	"version": "3.0.5",
 	"compatibility": ">=5.0.0",
 	"author": {
 		"name": "Jelger Haanstra",
@@ -31,8 +31,9 @@
   "source": "https://github.com/jghaanstra/com.bluesound",
   "homepage": "https://community.athom.com/t/121",
 	"images": {
-		"large": "./assets/images/large.png",
-		"small": "./assets/images/small.png"
+		"small": "./assets/images/small.png",
+    "large": "./assets/images/large.png",
+    "xlarge": "./assets/images/xlarge.png"
 	},
 	"category": "music",
 	"description": {
@@ -50,8 +51,9 @@
 				"nl": "Bluesound"
 			},
 			"images": {
-				"large": "drivers/bluesound/assets/images/large.jpg",
-				"small": "drivers/bluesound/assets/images/small.jpg"
+				"small": "drivers/bluesound/assets/images/small.jpg",
+        "large": "drivers/bluesound/assets/images/large.jpg",
+        "xlarge": "drivers/bluesound/assets/images/xlarge.jpg"
 			},
 			"class": "speaker",
 			"capabilities": [
