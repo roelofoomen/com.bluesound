@@ -28,5 +28,8 @@
   },
   "3.0.5": {
     "en": "Updated to SDK3 (require Homey firmware 5.x) and fixed an issue with the start/stop playing trigger card and removed a duplicate \"is (not) playing\" condition card. You might have to update your flows because of this."
+  },
+  "3.0.7": {
+    "en": "This release contains no functional changes but only updates for used framework due to security issues."
   }
 }
