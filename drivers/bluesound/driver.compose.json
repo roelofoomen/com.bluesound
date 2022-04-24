@@ -1,0 +1,68 @@
+{
+  "name": {
+    "en": "Bluesound",
+    "nl": "Bluesound"
+  },
+  "images": {
+    "small": "drivers/bluesound/assets/images/small.jpg",
+    "large": "drivers/bluesound/assets/images/large.jpg",
+    "xlarge": "drivers/bluesound/assets/images/xlarge.jpg"
+  },
+  "class": "speaker",
+  "capabilities": [
+    "speaker_playing",
+    "speaker_prev",
+    "speaker_next",
+    "volume_set",
+    "volume_mute"
+  ],
+  "pair": [
+    {
+      "id": "start"
+    }
+  ],
+  "settings": [
+    {
+      "type": "group",
+      "label": {
+        "en": "Bluesound settings",
+        "nl": "Bluesound instellingen"
+      },
+      "children": [
+        {
+          "id": "address",
+          "type": "text",
+          "value": "0.0.0.0",
+          "label": {
+            "en": "IP Address",
+            "nl": "IP adres"
+          }
+        },
+        {
+          "id": "port",
+          "type": "number",
+          "value": 11000,
+          "step": 1,
+          "label": {
+            "en": "Port",
+            "nl": "Poort"
+          }
+        },
+        {
+          "id": "polling",
+          "type": "number",
+          "value": 4,
+          "step": 1,
+          "attr": {
+            "min": 4,
+            "max": 3600
+          },
+          "label": {
+            "en": "Polling",
+            "nl": "Polling"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,409 @@
+{
+  "triggers": [
+    {
+      "id": "start_playing",
+      "title": {
+        "en": "Start Playing",
+        "nl": "Start afspelen"
+      },
+      "tokens": [
+        {
+          "name": "album",
+          "type": "string",
+          "title": {
+            "en": "Album",
+            "nl": "Album"
+          },
+          "example": "Dirt"
+        },
+        {
+          "name": "track",
+          "type": "string",
+          "title": {
+            "en": "Track",
+            "nl": "Track"
+          },
+          "example": "Would?"
+        },
+        {
+          "name": "artist",
+          "type": "string",
+          "title": {
+            "en": "Artist",
+            "nl": "Artist"
+          },
+          "example": "Alice in Chains"
+        }
+      ],
+      "args": []
+    },
+    {
+      "id": "stop_playing",
+      "title": {
+        "en": "Stop Playing",
+        "nl": "Stop afspelen"
+      },
+      "args": []
+    },
+    {
+      "id": "artist_changed",
+      "title": {
+        "en": "Artist changed",
+        "nl": "Artiest gewijzigd"
+      },
+      "tokens": [
+        {
+          "name": "album",
+          "type": "string",
+          "title": {
+            "en": "Album",
+            "nl": "Album"
+          },
+          "example": "Dirt"
+        },
+        {
+          "name": "track",
+          "type": "string",
+          "title": {
+            "en": "Track",
+            "nl": "Track"
+          },
+          "example": "Would?"
+        },
+        {
+          "name": "artist",
+          "type": "string",
+          "title": {
+            "en": "Artist",
+            "nl": "Artist"
+          },
+          "example": "Alice in Chains"
+        }
+      ],
+      "args": []
+    },
+    {
+      "id": "track_changed",
+      "title": {
+        "en": "Track changed",
+        "nl": "Track gewijzigd"
+      },
+      "tokens": [
+        {
+          "name": "album",
+          "type": "string",
+          "title": {
+            "en": "Album",
+            "nl": "Album"
+          },
+          "example": "Dirt"
+        },
+        {
+          "name": "track",
+          "type": "string",
+          "title": {
+            "en": "Track",
+            "nl": "Track"
+          },
+          "example": "Would?"
+        },
+        {
+          "name": "artist",
+          "type": "string",
+          "title": {
+            "en": "Artist",
+            "nl": "Artist"
+          },
+          "example": "Alice in Chains"
+        }
+      ],
+      "args": []
+    }
+  ],
+  "conditions": [
+    {
+      "id": "shuffled",
+      "title": {
+        "en": "!{{is|is not}} shuffled",
+        "nl": "!{{is|is niet}} shuffled"
+      },
+      "args": []
+    }
+  ],
+  "actions": [
+    {
+      "id": "repeat",
+      "title": {
+        "en": "Repeat",
+        "nl": "Herhaal"
+      },
+      "titleFormatted": {
+        "en": "Set repeat to [[repeat]]",
+        "nl": "Instellen repeat op [[repeat]]"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "repeat",
+          "values": [
+            {
+              "id": "0",
+              "label": {
+                "en": "On",
+                "nl": "Aan"
+              }
+            },
+            {
+              "id": "1",
+              "label": {
+                "en": "Track",
+                "nl": "Track"
+              }
+            },
+            {
+              "id": "2",
+              "label": {
+                "en": "Off",
+                "nl": "Uit"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "shuffle",
+      "title": {
+        "en": "Shuffle",
+        "nl": "Shuffle"
+      },
+      "titleFormatted": {
+        "en": "Set shuffle to [[shuffle]]",
+        "nl": "Instellen shuffle op [[shuffle]]"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "shuffle",
+          "values": [
+            {
+              "id": "0",
+              "label": {
+                "en": "Off",
+                "nl": "Uit"
+              }
+            },
+            {
+              "id": "1",
+              "label": {
+                "en": "On",
+                "nl": "Aan"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "changeinput",
+      "title": {
+        "en": "Change input",
+        "nl": "Verander input"
+      },
+      "titleFormatted": {
+        "en": "Change input to [[inputs]]",
+        "nl": "Wijzig input naar [[inputs]]"
+      },
+      "args": [
+        {
+          "type": "autocomplete",
+          "name": "inputs",
+          "placeholder": {
+            "en": "Select input",
+            "nl": "Selecteer input"
+          }
+        }
+      ]
+    },
+    {
+      "id": "changeservice",
+      "title": {
+        "en": "Change service",
+        "nl": "Verander service"
+      },
+      "titleFormatted": {
+        "en": "Change service to [[services]]",
+        "nl": "Wijzig service naar [[services]]"
+      },
+      "args": [
+        {
+          "type": "autocomplete",
+          "name": "services",
+          "placeholder": {
+            "en": "Select service",
+            "nl": "Selecteer service"
+          }
+        }
+      ]
+    },
+    {
+      "id": "playpreset",
+      "title": {
+        "en": "Play Preset",
+        "nl": "Speel preset"
+      },
+      "titleFormatted": {
+        "en": "Play preset [[preset]]",
+        "nl": "Speel preset [[preset]]"
+      },
+      "args": [
+        {
+          "type": "number",
+          "name": "preset",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "placeholder": {
+            "en": "Select preset",
+            "nl": "Selecteer preset"
+          }
+        }
+      ]
+    },
+    {
+      "id": "addslave",
+      "title": {
+        "en": "Add slave",
+        "nl": "Toevoegen slave"
+      },
+      "titleFormatted": {
+        "en": "Add slave with ip [[ip]] to group [[group]]",
+        "nl": "Toevoegen slave met ip [[ip]] aan groep [[group]]"
+      },
+      "args": [
+        {
+          "type": "text",
+          "name": "ip",
+          "placeholder": {
+            "en": "Slave IP",
+            "nl": "Slave IP"
+          }
+        },
+        {
+          "type": "text",
+          "name": "group",
+          "placeholder": {
+            "en": "Group Name",
+            "nl": "Groepsnaam"
+          }
+        }
+      ]
+    },
+    {
+      "id": "removeslave",
+      "title": {
+        "en": "Remove slave",
+        "nl": "Verwijderen slave"
+      },
+      "titleFormatted": {
+        "en": "Remove slave with ip [[ip]]",
+        "nl": "Verwijder slave met ip [[ip]]"
+      },
+      "args": [
+        {
+          "type": "text",
+          "name": "ip",
+          "placeholder": {
+            "en": "Slave IP",
+            "nl": "Slave IP"
+          }
+        }
+      ]
+    },
+    {
+      "id": "switchinput",
+      "title": {
+        "en": "Switch input",
+        "nl": "Schakel input"
+      },
+      "titleFormatted": {
+        "en": "Change to [[direction]] input",
+        "nl": "Wijzig naar [[direction]] input"
+      },
+      "hint": {
+        "en": "Use this card to switch to the next or previous input",
+        "nl": "Gebruik deze card om naar de vorige of volgende input te gaan"
+      },
+      "args": [
+        {
+          "type": "dropdown",
+          "name": "direction",
+          "values": [
+            {
+              "id": "previous",
+              "label": {
+                "en": "Previous",
+                "nl": "Vorige"
+              }
+            },
+            {
+              "id": "next",
+              "label": {
+                "en": "Next",
+                "nl": "Volgende"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "setRelativeVolume",
+      "title": {
+        "en": "Set Relative Volume",
+        "nl": "Relatief volume instellen"
+      },
+      "titleFormatted": {
+        "en": "Set relative volume to [[volume]]",
+        "nl": "Instellen relatieve volume op [[volume]]"
+      },
+      "args": [
+        {
+          "type": "range",
+          "name": "volume",
+          "min": -1,
+          "max": 1,
+          "step": 0.1,
+          "label": "%",
+          "labelMultiplier": 100,
+          "labelDecimals": 0
+        }
+      ]
+    },
+    {
+      "id": "sendcommand",
+      "title": {
+        "en": "Send Command",
+        "nl": "Verstuur commando"
+      },
+      "titleFormatted": {
+        "en": "Send command [[command]]",
+        "nl": "Verstuur commando [[command]]"
+      },
+      "hint": {
+        "en": "Use this card to send any custom command to to your Bluesound device, for instance Genres?service=LocalMusic",
+        "nl": "Gebruik deze card om elk aangepast commando naar je Bluesound apparaat te versturen, b.v. Genres?service=LocalMusic"
+      },
+      "args": [
+        {
+          "type": "text",
+          "name": "command",
+          "placeholder": {
+            "en": "Command",
+            "nl": "Commando"
+          }
+        }
+      ]
+    }
+  ]
+}
