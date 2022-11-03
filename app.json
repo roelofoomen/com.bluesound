@@ -1,12 +1,22 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.bluesound",
+  "version": "3.1.0",
+  "compatibility": ">=5.0.0",
+  "platforms": [
+    "local"
+  ],
   "sdk": 3,
   "brandColor": "#000000",
   "name": {
     "en": "Bluesound",
     "nl": "Bluesound"
   },
+  "description": {
+    "en": "Multi-room Music. The Hi-Res Way.",
+    "nl": "Muziek voor meerdere kamers. De Hi-Res manier."
+  },
+  "category": "music",
   "tags": {
     "en": [
       "bluesound",
@@ -17,41 +27,33 @@
       "muziek"
     ]
   },
-  "version": "3.1.0",
-  "compatibility": ">=5.0.0",
-  "author": {
-    "name": "Jelger Haanstra",
-    "email": "homey@solidewebservices.com",
-    "website": "https://github.com/jghaanstra/com.bluesound"
-  },
-  "contributing": {
-    "donate": {
-      "paypal": {
-        "username": "jghaanstra"
-      }
-    }
-  },
-  "bugs": {
-    "url": "https://github.com/jghaanstra/com.bluesound/issues"
-  },
-  "homeyCommunityTopicId": 121,
-  "source": "https://github.com/jghaanstra/com.bluesound",
   "images": {
     "small": "./assets/images/small.png",
     "large": "./assets/images/large.png",
     "xlarge": "./assets/images/xlarge.png"
   },
-  "category": "music",
-  "description": {
-    "en": "Control your Bluesound devices with Homey",
-    "nl": "Bedien je Bluesound apparaten via Homey"
+  "author": {
+    "name": "Roelof Oomen"
   },
-  "dependencies": {
-    "net": "*"
+  "contributors": {
+    "developers": [
+      {
+        "name": "Jelger Haanstra"
+      }
+    ]
   },
-  "platforms": [
-    "local"
-  ],
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "rjoomen"
+      }
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/rjoomen/com.bluesound/issues"
+  },
+  "homeyCommunityTopicId": 121,
+  "source": "https://github.com/rjoomen/com.bluesound",
   "flow": {
     "triggers": [
       {
