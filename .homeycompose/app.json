@@ -1,0 +1,56 @@
+{
+  "id": "com.bluesound",
+  "version": "3.1.0",
+  "compatibility": ">=5.0.0",
+  "platforms": [
+    "local"
+  ],
+  "sdk": 3,
+  "brandColor": "#000000",
+  "name": {
+    "en": "Bluesound",
+    "nl": "Bluesound"
+  },
+  "description": {
+    "en": "Multi-room Music. The Hi-Res Way.",
+    "nl": "Muziek voor meerdere kamers. De Hi-Res manier."
+  },
+  "category": "music",
+  "tags": {
+    "en": [
+      "bluesound",
+      "music"
+    ],
+    "nl": [
+      "bluesound",
+      "muziek"
+    ]
+  },
+  "images": {
+    "small": "./assets/images/small.png",
+    "large": "./assets/images/large.png",
+    "xlarge": "./assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Roelof Oomen"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Jelger Haanstra"
+      }
+    ]
+  },
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "rjoomen"
+      }
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/rjoomen/com.bluesound/issues"
+  },
+  "homeyCommunityTopicId": 121,
+  "source": "https://github.com/rjoomen/com.bluesound"
+}

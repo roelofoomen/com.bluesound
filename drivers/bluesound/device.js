@@ -69,12 +69,18 @@ class BluesoundDevice extends Homey.Device {
         }
 
         // capability speaker_playing
-        if (result.state != "pause" && !this.getCapabilityValue('speaker_playing')) {
-          this.setCapabilityValue('speaker_playing', true);
-          this.homey.flow.getDeviceTriggerCard('start_playing').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {});
-        } else if (result.state == "pause" && this.getCapabilityValue('speaker_playing')) {
-          this.setCapabilityValue('speaker_playing', false);
-          this.homey.flow.getDeviceTriggerCard('stop_playing').trigger(this, {}, {});
+        if ((result.state == 'play') || (result.state == 'stream')) {
+          // playing
+          if (!this.getCapabilityValue('speaker_playing')) {
+            this.setCapabilityValue('speaker_playing', true);
+            this.homey.flow.getDeviceTriggerCard('start_playing').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {});
+          }
+        } else {
+          // not playing
+          if (this.getCapabilityValue('speaker_playing')) {
+            this.setCapabilityValue('speaker_playing', false);
+            this.homey.flow.getDeviceTriggerCard('stop_playing').trigger(this, {}, {});
+          }
         }
 
         // capability volume_set and volume_mute
