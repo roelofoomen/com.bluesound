@@ -37,5 +37,8 @@
   },
   "3.1.0": {
     "en": "Correctly handling playing/non-playing states.\nUpgraded project structure to Homey Compose.\nNew maintainer."
+  },
+  "3.2.0": {
+    "en": "Now showing track, artist and album.\nAdded album art display.\nImplemented shuffle and repeat functions.\nFix for crash when service was unknown."
   }
 }

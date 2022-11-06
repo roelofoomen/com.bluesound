@@ -17,7 +17,7 @@
   "mac": "MAC address:"
 	},
   "util": {
-    "not_available": "not available"
+    "not_available": "Not available"
   },
   "device": {
     "unreachable": "Unreachable"

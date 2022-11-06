@@ -13,6 +13,9 @@
     "speaker_playing",
     "speaker_prev",
     "speaker_next",
+    "speaker_artist",
+    "speaker_album",
+    "speaker_track",
     "volume_set",
     "volume_mute"
   ],

@@ -17,7 +17,7 @@
   "mac": "MAC address:"
 	},
   "util": {
-    "not_available": "niet beschikbaar"
+    "not_available": "Niet beschikbaar"
   },
   "device": {
     "unreachable": "Onbereikbaar"
