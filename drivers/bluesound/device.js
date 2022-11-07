@@ -97,17 +97,20 @@ class BluesoundDevice extends Homey.Device {
     this.image.setStream(async (stream) => {
       if (this.albumArtUrl) {
         this.log("Fetching album art image: ", this.albumArtUrl);
-        const res = await fetch(this.albumArtUrl);
-        if (res.ok) {
+        try {
+          var res = await fetch(this.albumArtUrl);
+        } catch(err) {}
+        if (!res || !res.ok) {
+          this.log("Fetching album art image failed.");
+        } else {
           return res.body.pipe(stream);
         }
-        this.log("Fetching image failed.");
       }
-      // Stream local default image if album art unavailable
+      this.log("Streaming local default album art image.");
       const readStream = fs.createReadStream("./assets/images/logo.png");
       return readStream.pipe(stream);
     });
-    await this.image.update();
+    this.image.update();
     this.setAlbumArtImage(this.image);
   }
 
@@ -130,6 +133,7 @@ class BluesoundDevice extends Homey.Device {
         }
 
         // capability speaker_playing
+        // "play and stream should be considered to have the same meaning."
         if ((result.state == 'play') || (result.state == 'stream')) {
           // playing
           if (!this.getCapabilityValue('speaker_playing')) {
@@ -214,9 +218,14 @@ class BluesoundDevice extends Homey.Device {
         if (this.getStoreValue('image') != result.image && (result.state !== 'stop' || result.state !== 'pause')) {
           this.setStoreValue('image', result.image);
           this.log('Image changed to:', result.image);
-          // The image tag contains a link 
-          this.albumArtUrl = 'http://'+ this.getSetting('address') +':'+ this.getSetting('port') + result.image;
-          await this.image.update();
+          // The image tag contains a (partial) url
+          if (!result.streamUrl) {
+            //TODO: albumArtUrl as StoreValue
+            this.albumArtUrl = 'http://'+ this.getSetting('address') +':'+ this.getSetting('port') + result.image;
+          } else {
+            this.albumArtUrl = result.image;
+          }
+          this.image.update();
         }
       } catch (error) {
         this.log(error);

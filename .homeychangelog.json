@@ -40,5 +40,8 @@
   },
   "3.2.0": {
     "en": "Now showing track, artist and album.\nAdded album art display.\nImplemented shuffle and repeat functions.\nFix for crash when service was unknown."
+  },
+  "3.2.1": {
+    "en": "Album art display fixes for streaming services.\nImproved logic for album, artist, and track names."
   }
 }

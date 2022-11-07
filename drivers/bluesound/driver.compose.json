@@ -16,6 +16,8 @@
     "speaker_artist",
     "speaker_album",
     "speaker_track",
+    "speaker_shuffle",
+    "speaker_repeat",
     "volume_set",
     "volume_mute"
   ],
