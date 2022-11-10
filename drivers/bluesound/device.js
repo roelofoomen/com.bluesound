@@ -3,7 +3,6 @@
 const Homey = require('homey');
 const Util = require('/lib/util.js');
 const fetch = require("node-fetch");
-const path = require('node:path');
 const fs = require('fs');
 
 class BluesoundDevice extends Homey.Device {
@@ -30,11 +29,13 @@ class BluesoundDevice extends Homey.Device {
 
     //TODO:
     // Shuffle and repeat have no meaning for streams (see doc): disable
+    // Should volume_up and volume_down be added?
+    //   - Use volume up from player with fixed dB
 
     this.setAvailable();
     this.pollDevice();
 
-    // LISTENERS FOR UPDATING CAPABILITIES
+    // ** Listeners for updating capabilitied
     this.registerCapabilityListener('speaker_playing', async (value) => {
       const command = value ? 'Play' : 'Pause';
       return await this.util.sendCommand(command, this.getSetting('address'), this.getSetting('port'));
@@ -43,6 +44,7 @@ class BluesoundDevice extends Homey.Device {
     this.registerCapabilityListener('speaker_prev', async (value) => {
       try {
         // Send command twice because first command jumps to start of current track
+        //TODO: is sending twice the best solution? Because when in first 4s back works.
         await this.util.sendCommand('Back', this.getSetting('address'), this.getSetting('port'));
         await this.util.sendCommand('Back', this.getSetting('address'), this.getSetting('port'));
         return Promise.resolve();
@@ -56,23 +58,25 @@ class BluesoundDevice extends Homey.Device {
     });
 
     this.registerCapabilityListener('volume_set', async (value) => {
-      this.setStoreValue('mutevol', value.toFixed(2));
-      const volume = value.toFixed(2) * 100;
-      const path = 'Volume?level='+ volume;
-      return await this.util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
-    });
-
-    this.registerCapabilityListener('volume_mute', async (value) => {
-      if (value) {
-        const path = 'Volume?level=0';
-        return await this.util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
+      if (this.getStoreValue('volume') < 0) {
+        // Volume -1 indicates fixed level: set capability to 100 %.
+        this.setCapabilityValue('volume_set', 1);
+        this.log("Volume not changed: player has a fixed volume level.");
+        return false;
       } else {
-        return await this.setCapabilityValue('volume_set', this.getStoreValue('mutevol'));
+        const path = 'Volume?level=' + (value * 100).toFixed();
+        return await this.util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
       }
     });
 
+    this.registerCapabilityListener('volume_mute', async (value) => {
+      const path = 'Volume?mute=' + (+value);
+      return await this.util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
+    });
+
     this.registerCapabilityListener('speaker_shuffle', async (value) => {
-      return await this.util.sendCommand('Shuffle', this.getSetting('address'), this.getSetting('port'), +value);
+      const path = "Shuffle?state=" + (+value)
+      return await this.util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
     });
 
     this.registerCapabilityListener('speaker_repeat', async (value) => {
@@ -89,9 +93,11 @@ class BluesoundDevice extends Homey.Device {
         default:
           var repvalue = 2;
       }
-      return await this.util.sendCommand('Repeat', this.getSetting('address'), this.getSetting('port'), +repvalue);
+      const path = "Repeat?state=" + repvalue
+      return await this.util.sendCommand(path, this.getSetting('address'), this.getSetting('port'));
     });
 
+    // Album art
     this.image = await this.homey.images.createImage();
     // Use setStream() for album art, as SetUrl() requires https
     this.image.setStream(async (stream) => {
@@ -119,7 +125,7 @@ class BluesoundDevice extends Homey.Device {
     clearInterval(this.pingInterval);
   }
 
-  // HELPER FUNCTIONS
+  // ** Helper functions
   pollDevice() {
     clearInterval(this.pollingInterval);
     clearInterval(this.pingInterval);
@@ -132,7 +138,7 @@ class BluesoundDevice extends Homey.Device {
           this.setAvailable();
         }
 
-        // capability speaker_playing
+        // Capability speaker_playing
         // "play and stream should be considered to have the same meaning."
         if ((result.state == 'play') || (result.state == 'stream')) {
           // playing
@@ -150,33 +156,25 @@ class BluesoundDevice extends Homey.Device {
           }
         }
 
-        // capability volume_set and volume_mute
-        var volume = result.volume / 100;
-        if (this.getCapabilityValue('volume_set') != volume) {
-          this.setCapabilityValue('volume_set', volume);
-          this.log('Volume changed to:', volume);
+        // Other capabilities
+        if (this.getCapabilityValue('volume_mute') != !!result.mute) {
+          this.setCapabilityValue('volume_mute', !!result.mute);
+          this.log('Mute changed to:', !!result.mute);
         }
-        if (volume === 0 && this.getCapabilityValue('volume_mute') === false) {
-          this.setCapabilityValue('volume_mute', true);
-          this.log('Volume muted.');
-        } else if (volume != 0 && this.getCapabilityValue('volume_mute') === true) {
-          this.setCapabilityValue('volume_mute', false);
-          this.log('Volume unmuted.');
+        if (this.getStoreValue('volume') != result.volume) {
+          this.setStoreValue('volume', result.volume);
+          if (result.volume < 0) {
+            // Volume -1 indicates fixed level: set capability to 100 %.
+            this.setCapabilityValue('volume_set', 1);
+            this.log('Volume changed to fixed level.');
+          } else {
+            this.setCapabilityValue('volume_set', result.volume / 100);
+            this.log('Volume changed to:', result.volume);
+          }
         }
-
-        // stores values
-        if (this.getStoreValue('state') != result.state) {
-          this.setStoreValue('state', result.state);
-          this.log('State changed to:', result.state);
-        }
-        if (this.getStoreValue('service') != result.service) {
-          this.setStoreValue('service', result.service);
-          this.log('Service changed to:', result.service);
-        }
-        if (this.getStoreValue('shuffle') != result.shuffle) {
-          this.setStoreValue('shuffle', result.shuffle);
-          this.log('Shuffle changed to:', result.shuffle);
+        if (this.getCapabilityValue('speaker_shuffle') != !!result.shuffle) {
           this.setCapabilityValue('speaker_shuffle', !!result.shuffle);
+          this.log('Shuffle changed to:', !!result.shuffle);
         }
         if (this.getStoreValue('repeat') != result.repeat) {
           this.setStoreValue('repeat', result.repeat);
@@ -187,13 +185,28 @@ class BluesoundDevice extends Homey.Device {
               break;
             case 0:
               this.setCapabilityValue('speaker_repeat', 'playlist');
-              var repvalue = 0;
               break;
             case 2:
             default:
               this.setCapabilityValue('speaker_repeat', 'none');
           }
         }
+
+        // Store values
+        if (this.getStoreValue('muteVolume') != result.muteVolume) {
+          this.setStoreValue('muteVolume', result.muteVolume);
+          this.log('MuteVolume changed to:', result.muteVolume);
+        }
+        if (this.getStoreValue('state') != result.state) {
+          this.setStoreValue('state', result.state);
+          this.log('State changed to:', result.state);
+        }
+        if (this.getStoreValue('service') != result.service) {
+          this.setStoreValue('service', result.service);
+          this.log('Service changed to:', result.service);
+        }
+
+        // Playing information
         if (this.getStoreValue('artist') != result.artist && (result.state !== 'stop' || result.state !== 'pause')) {
           this.setStoreValue('artist', result.artist);
           this.log('Artist changed to:', result.artist);

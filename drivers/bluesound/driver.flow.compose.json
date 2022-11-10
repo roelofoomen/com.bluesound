@@ -133,6 +133,7 @@
   "actions": [
     {
       "id": "repeat",
+      "deprecated": true,
       "title": {
         "en": "Repeat",
         "nl": "Herhaal"
@@ -173,6 +174,7 @@
     },
     {
       "id": "shuffle",
+      "deprecated": true,
       "title": {
         "en": "Shuffle",
         "nl": "Shuffle"
@@ -359,6 +361,7 @@
     },
     {
       "id": "setRelativeVolume",
+      "deprecated": true,
       "title": {
         "en": "Set Relative Volume",
         "nl": "Relatief volume instellen"

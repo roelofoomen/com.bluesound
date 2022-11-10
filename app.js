@@ -10,7 +10,7 @@ class BluesoundApp extends Homey.App {
 
     if (!this.util) this.util = new Util({homey: this.homey });
 
-    // CONDITION CARDS
+    // ** Condition cards
     this.homey.flow.getConditionCard('shuffled')
       .registerRunListener(async (args) => {
         if (args.device.getStoreValue('shuffle') == 1) {
@@ -20,13 +20,15 @@ class BluesoundApp extends Homey.App {
         }
       })
 
-    // ACTION CARDS
+    // ** Action cards
+    // Deprecated in favour of native action
     this.homey.flow.getActionCard('repeat')
       .registerRunListener(async (args) => {
         var path = 'Repeat?state='+ args.repeat;
         return this.util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
       })
 
+    // Deprecated in favour of native action
     this.homey.flow.getActionCard('shuffle')
       .registerRunListener(async (args) => {
         var path = 'Shuffle?state='+ args.shuffle;
@@ -87,20 +89,20 @@ class BluesoundApp extends Homey.App {
         return this.util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
       })
 
+    // Deprecated in favour of native action
     this.homey.flow.getActionCard('setRelativeVolume')
       .registerRunListener(async (args) => {
-        var current_volume = args.device.getCapabilityValue('volume_set');
-        if (args.volume >= 0) {
-          var new_volume = current_volume + (current_volume * args.volume);
+        if (args.device.getStoreValue('volume') < 0) {
+          args.device.log("Volume not changed: player has a fixed volume level.");
+          // Volume -1 indicates fixed level: set capability to 100 %.
+          args.device.setCapabilityValue('volume_set', 1);
+          return false;
         } else {
-          var new_volume = (current_volume * args.volume) + current_volume;
+          args.device.log("Changing relative volume by: ", args.volume * 100);
+          var new_volume = (args.device.getCapabilityValue('volume_set') + args.volume) * 100;
+          var path = 'Volume?level='+ Math.min(Math.max(new_volume, 0), 100).toFixed();
+          return this.util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
         }
-        if (new_volume > 0 ) {
-          args.device.setStoreValue('mutevol', new_volume);
-        }
-        var calculated_volume = new_volume * 100;
-        var path = 'Volume?level='+ calculated_volume;
-        return this.util.sendCommand(path, args.device.getSetting('address'), args.device.getSetting('port'))
       })
 
     this.homey.flow.getActionCard('sendcommand')

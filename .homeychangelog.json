@@ -39,9 +39,12 @@
     "en": "Correctly handling playing/non-playing states.\nUpgraded project structure to Homey Compose.\nNew maintainer."
   },
   "3.2.0": {
-    "en": "Now showing track, artist and album.\nAdded album art display.\nImplemented shuffle and repeat functions.\nFix for crash when service was unknown."
+    "en": "Now showing track, artist and album.\nAdded album art display.\nImplemented native repeat and shuffle functions.\nFix for crash when service was unknown."
   },
   "3.2.1": {
     "en": "Album art display fixes for streaming services.\nImproved logic for album, artist, and track names."
+  },
+  "3.2.2": {
+    "en": "Dealing correctly with players set to fixed volume level.\nMuting uses player native muting functionality.\nDeprecated custom repeat, shuffle and set relative volume action cards, as they already exist natively."
   }
 }
