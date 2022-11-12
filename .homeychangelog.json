@@ -46,5 +46,8 @@
   },
   "3.2.2": {
     "en": "Dealing correctly with players set to fixed volume level.\nMuting uses player native muting functionality.\nDeprecated custom repeat, shuffle and set relative volume action cards, as they already exist natively."
+  },
+  "3.2.3": {
+    "en": "Implemented long-polling.\nBack in app now executes back on player only once instead of twice.\nNew app image."
   }
 }

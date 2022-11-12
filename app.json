@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.bluesound",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "compatibility": ">=5.0.0",
   "platforms": [
     "local"
@@ -28,9 +28,9 @@
     ]
   },
   "images": {
-    "small": "./assets/images/small.png",
-    "large": "./assets/images/large.png",
-    "xlarge": "./assets/images/xlarge.png"
+    "small": "./assets/images/small.jpg",
+    "large": "./assets/images/large.jpg",
+    "xlarge": "./assets/images/xlarge.jpg"
   },
   "author": {
     "name": "Roelof Oomen"
@@ -603,17 +603,23 @@
               }
             },
             {
-              "id": "polling",
+              "id": "longPolling",
               "type": "number",
-              "value": 4,
+              "value": 100,
               "step": 1,
-              "attr": {
-                "min": 4,
-                "max": 3600
+              "min": 30,
+              "max": 3600,
+              "units": {
+                "en": "seconds",
+                "nl": "seconden"
               },
               "label": {
-                "en": "Polling",
-                "nl": "Polling"
+                "en": "Long-polling interval",
+                "nl": "Long-polling interval"
+              },
+              "hint": {
+                "en": "Recommended polling interval is 100s. Long-polling responds immediately to player changes, independently of the interval.",
+                "nl": "Aanbevolen polling interval is 100s. Long-polling reageert direct op veranderingen in de speler, onafhankelijk van het interval."
               }
             }
           ]

@@ -8,7 +8,7 @@
   "intro": "Voer het IP adres en de port van het Bluesound apparaat in.",
   "address": "IP adres",
   "port": "Poort",
-  "polling": "Polling frequentie",
+  "longpolling": "Long-polling interval",
   "success": "Bluesound apparaat succesvol toegevoegd.",
   "test" : "Test connectie",
   "testing" : "Bluesound connectietest succesvol, je kan het Bluesound apparaat nu verbinden.",

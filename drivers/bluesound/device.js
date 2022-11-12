@@ -27,12 +27,8 @@ class BluesoundDevice extends Homey.Device {
       await this.addCapability('speaker_repeat');
     }
 
-    //TODO:
-    // Shuffle and repeat have no meaning for streams (see doc): disable
-    // Should volume_up and volume_down be added?
-    //   - Use volume up from player with fixed dB
-
     this.setAvailable();
+    this.etag = null;
     this.pollDevice();
 
     // ** Listeners for updating capabilitied
@@ -43,9 +39,7 @@ class BluesoundDevice extends Homey.Device {
 
     this.registerCapabilityListener('speaker_prev', async (value) => {
       try {
-        // Send command twice because first command jumps to start of current track
-        //TODO: is sending twice the best solution? Because when in first 4s back works.
-        await this.util.sendCommand('Back', this.getSetting('address'), this.getSetting('port'));
+        // "If a track is playing and has been playing for more than four seconds then back will return to the start of the track."
         await this.util.sendCommand('Back', this.getSetting('address'), this.getSetting('port'));
         return Promise.resolve();
       } catch (error) {
@@ -101,10 +95,10 @@ class BluesoundDevice extends Homey.Device {
     this.image = await this.homey.images.createImage();
     // Use setStream() for album art, as SetUrl() requires https
     this.image.setStream(async (stream) => {
-      if (this.albumArtUrl) {
-        this.log("Fetching album art image: ", this.albumArtUrl);
+      if (this.getStoreValue('albumArtUrl')) {
+        this.log("Fetching album art image: ", this.getStoreValue('albumArtUrl'));
         try {
-          var res = await fetch(this.albumArtUrl);
+          var res = await fetch(this.getStoreValue('albumArtUrl'));
         } catch(err) {}
         if (!res || !res.ok) {
           this.log("Fetching album art image failed.");
@@ -121,146 +115,161 @@ class BluesoundDevice extends Homey.Device {
   }
 
   onDeleted() {
-    clearInterval(this.pollingInterval);
+    clearImmediate(this.pollingImmediate);
     clearInterval(this.pingInterval);
   }
 
   // ** Helper functions
   pollDevice() {
-    clearInterval(this.pollingInterval);
+    clearImmediate(this.pollingImmediate);
     clearInterval(this.pingInterval);
 
-    this.pollingInterval = setInterval(async () => {
+    const poll = async () => {
       try {
-        let result = await this.util.getBluesound(this.getSetting('address'), this.getSetting('port'));
+        this.log("Starting long-poll.");
+        let result = await this.util.getBluesound(this.getSetting('address'), this.getSetting('port'), true, this.getSetting('longPolling'), this.etag);
+        // Check results: when long-polling only if etag changed
+        if ((this.etag !== result.etag)) {
+          this.etag = result.etag;
 
-        if (!this.getAvailable()) {
-          this.setAvailable();
-        }
-
-        // Capability speaker_playing
-        // "play and stream should be considered to have the same meaning."
-        if ((result.state == 'play') || (result.state == 'stream')) {
-          // playing
-          if (!this.getCapabilityValue('speaker_playing')) {
-            this.setCapabilityValue('speaker_playing', true);
-            this.log('Playing started.');
-            this.homey.flow.getDeviceTriggerCard('start_playing').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {});
+          if (!this.getAvailable()) {
+            this.setAvailable();
           }
-        } else {
-          // not playing
-          if (this.getCapabilityValue('speaker_playing')) {
-            this.setCapabilityValue('speaker_playing', false);
-            this.log('Playing stopped or paused.');
-            this.homey.flow.getDeviceTriggerCard('stop_playing').trigger(this, {}, {});
-          }
-        }
 
-        // Other capabilities
-        if (this.getCapabilityValue('volume_mute') != !!result.mute) {
-          this.setCapabilityValue('volume_mute', !!result.mute);
-          this.log('Mute changed to:', !!result.mute);
-        }
-        if (this.getStoreValue('volume') != result.volume) {
-          this.setStoreValue('volume', result.volume);
-          if (result.volume < 0) {
-            // Volume -1 indicates fixed level: set capability to 100 %.
-            this.setCapabilityValue('volume_set', 1);
-            this.log('Volume changed to fixed level.');
+          // Capability speaker_playing
+          // "play and stream should be considered to have the same meaning."
+          if ((result.state == 'play') || (result.state == 'stream')) {
+            // playing
+            if (!this.getCapabilityValue('speaker_playing')) {
+              this.setCapabilityValue('speaker_playing', true);
+              this.log('Playing started.');
+              this.homey.flow.getDeviceTriggerCard('start_playing').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {});
+            }
           } else {
-            this.setCapabilityValue('volume_set', result.volume / 100);
-            this.log('Volume changed to:', result.volume);
+            // not playing
+            if (this.getCapabilityValue('speaker_playing')) {
+              this.setCapabilityValue('speaker_playing', false);
+              this.log('Playing stopped or paused.');
+              this.homey.flow.getDeviceTriggerCard('stop_playing').trigger(this, {}, {});
+            }
           }
-        }
-        if (this.getCapabilityValue('speaker_shuffle') != !!result.shuffle) {
-          this.setCapabilityValue('speaker_shuffle', !!result.shuffle);
-          this.log('Shuffle changed to:', !!result.shuffle);
-        }
-        if (this.getStoreValue('repeat') != result.repeat) {
-          this.setStoreValue('repeat', result.repeat);
-          this.log('Repeat changed to:', result.repeat);
-          switch(result.repeat) {
-            case 1:
-              this.setCapabilityValue('speaker_repeat', 'track');
-              break;
-            case 0:
-              this.setCapabilityValue('speaker_repeat', 'playlist');
-              break;
-            case 2:
-            default:
-              this.setCapabilityValue('speaker_repeat', 'none');
-          }
-        }
 
-        // Store values
-        if (this.getStoreValue('muteVolume') != result.muteVolume) {
-          this.setStoreValue('muteVolume', result.muteVolume);
-          this.log('MuteVolume changed to:', result.muteVolume);
-        }
-        if (this.getStoreValue('state') != result.state) {
-          this.setStoreValue('state', result.state);
-          this.log('State changed to:', result.state);
-        }
-        if (this.getStoreValue('service') != result.service) {
-          this.setStoreValue('service', result.service);
-          this.log('Service changed to:', result.service);
-        }
+          // Other capabilities
+          if (this.getCapabilityValue('volume_mute') != !!result.mute) {
+            this.setCapabilityValue('volume_mute', !!result.mute);
+            this.log('Mute changed to:', !!result.mute);
+          }
+          if (this.getStoreValue('volume') != result.volume) {
+            this.setStoreValue('volume', result.volume);
+            if (result.volume < 0) {
+              // Volume -1 indicates fixed level: set capability to 100 %.
+              this.setCapabilityValue('volume_set', 1);
+              this.log('Volume changed to fixed level.');
+            } else {
+              this.setCapabilityValue('volume_set', result.volume / 100);
+              this.log('Volume changed to:', result.volume);
+            }
+          }
+          if (this.getCapabilityValue('speaker_shuffle') != !!result.shuffle) {
+            this.setCapabilityValue('speaker_shuffle', !!result.shuffle);
+            this.log('Shuffle changed to:', !!result.shuffle);
+          }
+          if (this.getStoreValue('repeat') != result.repeat) {
+            this.setStoreValue('repeat', result.repeat);
+            this.log('Repeat changed to:', result.repeat);
+            switch(result.repeat) {
+              case 1:
+                this.setCapabilityValue('speaker_repeat', 'track');
+                break;
+              case 0:
+                this.setCapabilityValue('speaker_repeat', 'playlist');
+                break;
+              case 2:
+              default:
+                this.setCapabilityValue('speaker_repeat', 'none');
+            }
+          }
 
-        // Playing information
-        if (this.getStoreValue('artist') != result.artist && (result.state !== 'stop' || result.state !== 'pause')) {
-          this.setStoreValue('artist', result.artist);
-          this.log('Artist changed to:', result.artist);
-          if (result.artist !== this.homey.__('util.not_available')) {
-            this.homey.flow.getDeviceTriggerCard('artist_changed').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {})
+          // Store values
+          if (this.getStoreValue('muteVolume') != result.muteVolume) {
+            this.setStoreValue('muteVolume', result.muteVolume);
+            this.log('MuteVolume changed to:', result.muteVolume);
           }
-          this.setCapabilityValue('speaker_artist', result.artist);
-        }
-        if (this.getStoreValue('track') != result.track && (result.state !== 'stop' || result.state !== 'pause')) {
-          this.setStoreValue('track', result.track);
-          this.log('Track changed to:', result.track);
-          if (result.track !== this.homey.__('util.not_available')) {
-            this.homey.flow.getDeviceTriggerCard('track_changed').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {})
+          if (this.getStoreValue('state') != result.state) {
+            this.setStoreValue('state', result.state);
+            this.log('State changed to:', result.state);
           }
-          this.setCapabilityValue('speaker_track', result.track);
-        }
-        if (this.getStoreValue('album') != result.album && (result.state !== 'stop' || result.state !== 'pause')) {
-          this.setStoreValue('album', result.album);
-          this.log('Album changed to:', result.album);
-          this.setCapabilityValue('speaker_album', result.album);
-        }
-        if (this.getStoreValue('image') != result.image && (result.state !== 'stop' || result.state !== 'pause')) {
-          this.setStoreValue('image', result.image);
-          this.log('Image changed to:', result.image);
-          // The image tag contains a (partial) url
-          if (!result.streamUrl) {
-            //TODO: albumArtUrl as StoreValue
-            this.albumArtUrl = 'http://'+ this.getSetting('address') +':'+ this.getSetting('port') + result.image;
-          } else {
-            this.albumArtUrl = result.image;
+          if (this.getStoreValue('service') != result.service) {
+            this.setStoreValue('service', result.service);
+            this.log('Service changed to:', result.service);
           }
-          this.image.update();
+
+          // Playing information
+          if (this.getStoreValue('artist') != result.artist && (result.state !== 'stop' || result.state !== 'pause')) {
+            this.setStoreValue('artist', result.artist);
+            this.log('Artist changed to:', result.artist);
+            if (result.artist !== this.homey.__('util.not_available')) {
+              this.homey.flow.getDeviceTriggerCard('artist_changed').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {})
+            }
+            this.setCapabilityValue('speaker_artist', result.artist);
+          }
+          if (this.getStoreValue('track') != result.track && (result.state !== 'stop' || result.state !== 'pause')) {
+            this.setStoreValue('track', result.track);
+            this.log('Track changed to:', result.track);
+            if (result.track !== this.homey.__('util.not_available')) {
+              this.homey.flow.getDeviceTriggerCard('track_changed').trigger(this, {artist: result.artist, track: result.track, album: result.album}, {})
+            }
+            this.setCapabilityValue('speaker_track', result.track);
+          }
+          if (this.getStoreValue('album') != result.album && (result.state !== 'stop' || result.state !== 'pause')) {
+            this.setStoreValue('album', result.album);
+            this.log('Album changed to:', result.album);
+            this.setCapabilityValue('speaker_album', result.album);
+          }
+          if (this.getStoreValue('image') != result.image && (result.state !== 'stop' || result.state !== 'pause')) {
+            this.setStoreValue('image', result.image);
+            this.log('Image changed to:', result.image);
+            // The image tag contains a (partial) url
+            if (!result.streamUrl) {
+              this.setStoreValue('albumArtUrl', 'http://'+ this.getSetting('address') +':'+ this.getSetting('port') + result.image);
+            } else {
+              this.setStoreValue('albumArtUrl', result.image);
+            }
+            this.image.update();
+          }
+          // Delay 1s: "When long-polling is being used then a client must not make two consecutive requests for the same resource less than one second apart [..]"
+          await new Promise(resolve => setTimeout(resolve, 1000));
         }
+        // Restart long-polling
+        this.pollingImmediate = setImmediate(poll.bind(this));
       } catch (error) {
         this.log(error);
         this.setUnavailable(this.homey.__('device.unreachable'));
         this.pingDevice();
       }
-    }, 1000 * this.getSetting('polling'));
+    }
+    // Call polling function, which will set an immediate for itself to restart log-poll
+    poll();
   }
 
   pingDevice() {
-    clearInterval(this.pollingInterval);
+    clearImmediate(this.pollingImmediate);
     clearInterval(this.pingInterval);
 
-    this.pingInterval = setInterval(async () => {
+    const ping = async () => {
       try {
-        let result = await this.util.getBluesound(this.getSetting('address'), this.getSetting('port'));
+        // Try getting data using short-polling
+        this.log('Device is not reachable, pinging every 63 seconds to see if it comes online again.');
+        let result = await this.util.getBluesound(this.getSetting('address'), this.getSetting('port'), false, 6, null);
+        this.log('Device is back online, restarting polling.');
         this.setAvailable();
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Delay 1s
         this.pollDevice();
       } catch (error) {
-        this.log('Device is not reachable, pinging every 63 seconds to see if it comes online again.');
       }
-    }, 63000);
+    };
+    ping();
+    this.pingInterval = setInterval(ping, 63000);
   }
 
 }
