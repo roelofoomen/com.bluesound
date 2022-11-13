@@ -1,28 +1,15 @@
 {
   "name": "com.bluesound",
-  "version": "3.0.8",
-  "description": "Homey app for Bluesound devices",
   "main": "app.js",
   "dependencies": {
     "node-fetch": "^2.6.7",
     "xml2js": "^0.4.23"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint --ext .js,.ts --ignore-path .gitignore ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jghaanstra/com.bluesound.git"
-  },
-  "keywords": [
-    "bluesound",
-    "music"
-  ],
-  "author": "Jelger Haanstra",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jghaanstra/com.bluesound/issues"
-  },
-  "homepage": "https://apps.athom.com/app/com.bluesound"
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-athom": "^3.1.1"
+  }
 }
