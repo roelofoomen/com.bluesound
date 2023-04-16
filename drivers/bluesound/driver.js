@@ -17,17 +17,40 @@ class BluesoundDriver extends Homey.Driver {
   onPair(session) {
     session.setHandler('testConnection', async (data) => {
       try {
+        this.log('Testing connection...');
         const response = await this.util.sendCommand('SyncStatus', data.address, data.port);
+        // this.log(response);
+        let result;
         if (response) {
-          const result = {
-            brand: response.SyncStatus.$.brand,
-            model: response.SyncStatus.$.modelName,
-            mac: response.SyncStatus.$.mac,
+          let brand = '';
+          let model = '';
+          let mac = '';
+          if (Object.prototype.hasOwnProperty.call(response.SyncStatus, 'attr_brand')) {
+            brand = response.SyncStatus.attr_brand;
+          }
+          if (Object.prototype.hasOwnProperty.call(response.SyncStatus, 'attr_modelName')) {
+            model = response.SyncStatus.attr_modelName;
+          }
+          if (Object.prototype.hasOwnProperty.call(response.SyncStatus, 'attr_mac')) {
+            mac = response.SyncStatus.attr_mac;
+          }
+          result = {
+            brand,
+            model,
+            mac,
           };
-          return Promise.resolve(result);
+          this.log('Connection test result:', result);
+        } else {
+          result = {
+            brand: '',
+            model: '',
+            mac: '',
+          };
+          this.log('Connection test failed.');
         }
-        return Promise.resolve();
+        return Promise.resolve(result);
       } catch (error) {
+        this.log('Connection test failed, error:', error);
         return Promise.reject(error);
       }
     });

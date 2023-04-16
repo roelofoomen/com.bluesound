@@ -27,10 +27,6 @@ class BluesoundDevice extends Homey.Device {
       await this.addCapability('speaker_repeat');
     }
 
-    this.setAvailable();
-    this.etag = null;
-    this.pollDevice();
-
     // ** Listeners for updating capabilities
     this.registerCapabilityListener('speaker_playing', async (value) => {
       const command = value ? 'Play' : 'Pause';
@@ -91,30 +87,43 @@ class BluesoundDevice extends Homey.Device {
 
     // Album art
     this.image = await this.homey.images.createImage();
-    // Use setStream() for album art, as SetUrl() requires https
+    // Use setStream(), as SetUrl() requires https
     this.image.setStream(async (stream) => {
-      if (this.getStoreValue('albumArtUrl')) {
-        this.log('Fetching album art image: ', this.getStoreValue('albumArtUrl'));
-        try {
-          await get(this.getStoreValue('albumArtUrl'), async (err, res) => {
-            if (err || (res.statusCode !== 200)) {
-              this.log('Fetching album art image failed.');
-              this.log('Streaming local default album art image.');
-              const readStream = fs.createReadStream('./assets/images/logo.png');
-              return readStream.pipe(stream);
-            }
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            this.log('Streaming...');
-            return res.pipe(stream);
-          });
-        } catch (err) {
-          this.log('Obtaining an album art image failed.');
-        }
-        this.log('Albumart loaded.');
+      let result;
+      this.log('Fetching album art image:', this.getStoreValue('albumArtUrl'));
+      // TODO: Fix duplicate try...catch blocks (inside and outside of get)
+      try {
+        get({
+          url: this.getStoreValue('albumArtUrl'),
+          timeout: 4000,
+        }, (err, res) => {
+          try {
+            if (err) throw err;
+            if (res.statusCode !== 200) throw Error('Fetching album art image failed, GET response:', res.statusCode);
+            if (!res.headers['content-type'].startsWith('image')) throw Error('GET did not return an image.');
+            this.log('Streaming image.');
+            result = res.pipe(stream);
+          } catch (error) {
+            this.log('Fetching album art image failed, error:', error.message);
+            this.log('Streaming local default album art image.');
+            const readStream = fs.createReadStream('./assets/images/logo.png');
+            result = readStream.pipe(stream);
+          }
+        });
+      } catch (error) {
+        this.log('Fetching album art image failed, error:', error.message);
+        this.log('Streaming local default album art image.');
+        const readStream = fs.createReadStream('./assets/images/logo.png');
+        result = readStream.pipe(stream);
       }
+      return result;
     });
     this.setAlbumArtImage(this.image);
     this.image.update();
+
+    this.setAvailable();
+    this.etag = null; // Reset before first poll
+    this.pollDevice();
   }
 
   onDeleted() {

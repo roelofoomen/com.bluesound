@@ -4,6 +4,7 @@ Homey.setTitle(Homey.__('pair.title'));
 
 $(function() {
   $('#test-connection').click(function() {
+    $('#connect').prop('disabled', true);
     $('.bluesound-test').hide();
     $('.bluesound-ok').hide();
     $('.bluesound-error').hide();
@@ -24,14 +25,20 @@ $(function() {
           $('#mac').val(result.mac);
           $('#name').val(""+ result.brand +" "+ result.model +"");
           var bluesoundinfo = "<div class='info-row'><span class='info-label' data-i18n='pair.name'>Device:</span><span class='info-value'> "+ result.brand +" "+ result.model +"</span></div><div class='info-row'><span class='info-label' data-i18n='pair.mac'>MAC Address:</span><span class='info-value'> "+ result.mac +"</span></div>";
-          $('.bluesound-test').show();
           $('.bluesound-info').show();
           $('.bluesound-info').html(bluesoundinfo);
-          $('#connect').prop('disabled', false);
+          if ((result.mac !== '') && (result.mac !== '') && (result.mac !== '')) {
+            $('.bluesound-test').show();
+            $('#connect').prop('disabled', false);
+          } else {
+            $('.bluesound-error').show();
+            error = Homey.__('device.not_available')
+            $('.bluesound-error-msg').html(error);
+          }
         })
         .catch(error => {
-          $('.ipwebcam-error').show();
-          $('.ipwebcam-error-msg').html(error);
+          $('.bluesound-error').show();
+          $('.bluesound-error-msg').html(error);
         })
 
     } else {

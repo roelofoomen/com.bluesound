@@ -21,6 +21,6 @@
     "not_available": "Not available"
   },
   "device": {
-    "unreachable": "Unreachable"
+    "unreachable": "Device unreachable"
   }
 }
