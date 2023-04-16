@@ -2,8 +2,9 @@
   "name": "com.bluesound",
   "main": "app.js",
   "dependencies": {
-    "node-fetch": "^2.6.7",
-    "xml2js": "^0.4.23"
+    "node-fetch": "^2.6.9",
+    "simple-get": "^4.0.1",
+    "fast-xml-parser": "^4.2.0"
   },
   "scripts": {
     "lint": "eslint --ext .js,.ts --ignore-path .gitignore ."
@@ -11,8 +12,7 @@
   "devDependencies": {
     "@tsconfig/node12": "^1.0.11",
     "@types/homey": "npm:homey-apps-sdk-v3-types@^0.3.1",
-    "@types/node": "^18.11.9",
-    "eslint": "^7.32.0",
+    "@types/node": "^18.15.11",
     "eslint-config-athom": "^3.1.1"
   }
 }

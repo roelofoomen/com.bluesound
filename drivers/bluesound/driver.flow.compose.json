@@ -124,8 +124,8 @@
     {
       "id": "shuffled",
       "title": {
-        "en": "!{{is|is not}} shuffled",
-        "nl": "!{{is|is niet}} shuffled"
+        "en": "!{{Is|Is not}} shuffled",
+        "nl": "!{{Is|Is niet}} shuffled"
       },
       "args": []
     }

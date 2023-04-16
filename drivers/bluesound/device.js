@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const fetch = require('node-fetch');
+const get = require('simple-get');
 const fs = require('fs');
 const Util = require('../../lib/util');
 
@@ -94,20 +94,24 @@ class BluesoundDevice extends Homey.Device {
     // Use setStream() for album art, as SetUrl() requires https
     this.image.setStream(async (stream) => {
       if (this.getStoreValue('albumArtUrl')) {
-        let res;
         this.log('Fetching album art image: ', this.getStoreValue('albumArtUrl'));
         try {
-          res = await fetch(this.getStoreValue('albumArtUrl'));
-        } catch (err) {}
-        if (!res || !res.ok) {
-          this.log('Fetching album art image failed.');
-        } else {
-          return res.body.pipe(stream);
+          await get(this.getStoreValue('albumArtUrl'), async (err, res) => {
+            if (err || (res.statusCode !== 200)) {
+              this.log('Fetching album art image failed.');
+              this.log('Streaming local default album art image.');
+              const readStream = fs.createReadStream('./assets/images/logo.png');
+              return readStream.pipe(stream);
+            }
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            this.log('Streaming...');
+            return res.pipe(stream);
+          });
+        } catch (err) {
+          this.log('Obtaining an album art image failed.');
         }
+        this.log('Albumart loaded.');
       }
-      this.log('Streaming local default album art image.');
-      const readStream = fs.createReadStream('./assets/images/logo.png');
-      return readStream.pipe(stream);
     });
     this.setAlbumArtImage(this.image);
     this.image.update();
@@ -230,10 +234,10 @@ class BluesoundDevice extends Homey.Device {
             this.setStoreValue('image', result.image);
             this.log('Image changed to:', result.image);
             // The image tag contains a (partial) url
-            if (!result.streamUrl) {
-              this.setStoreValue('albumArtUrl', `http://${this.getSetting('address')}:${this.getSetting('port')}${result.image}`);
-            } else {
+            if (result.image.startsWith('http')) {
               this.setStoreValue('albumArtUrl', result.image);
+            } else {
+              this.setStoreValue('albumArtUrl', `http://${this.getSetting('address')}:${this.getSetting('port')}${result.image}`);
             }
             this.image.update();
           }
