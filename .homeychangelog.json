@@ -55,5 +55,8 @@
   },
   "3.2.5": {
     "en": "Connection test on new device creation.\nMore (minor) improvements to album art display.\n"
+  },
+  "3.2.6": {
+    "en": "Correctly handle numeric metadata.\n"
   }
 }
