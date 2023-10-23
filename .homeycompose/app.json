@@ -1,6 +1,6 @@
 {
   "id": "com.bluesound",
-  "version": "3.2.7",
+  "version": "3.2.8",
   "compatibility": ">=5.0.0",
   "platforms": [
     "local"

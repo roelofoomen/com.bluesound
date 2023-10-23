@@ -109,7 +109,7 @@ class BluesoundDevice extends Homey.Device {
       return result;
     });
     this.setAlbumArtImage(this.image).catch(this.error);
-    this.image.update();
+    this.image.update().catch(this.error);
 
     this.setAvailable().catch(this.error);
     this.etag = null; // Reset before first poll
@@ -238,7 +238,7 @@ class BluesoundDevice extends Homey.Device {
             } else {
               await this.setStoreValue('albumArtUrl', `http://${this.getSetting('address')}:${this.getSetting('port')}${result.image}`);
             }
-            this.image.update();
+            this.image.update().catch(this.error);
           }
           // Delay 1s: 'When long-polling is being used then a client must not make two consecutive requests for the same resource less than one second apart [..]'
           await new Promise((resolve) => this.homey.setTimeout(resolve, 1000));
